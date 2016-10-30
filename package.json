@@ -1,0 +1,11 @@
+{
+  "name": "telescope",
+  "version": "0.0.1",
+  "description": "file explorer for ipfs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "josselin CHEVALAY <josselin54.chevalay@gmail.com>",
+  "license": "MIT"
+}
