@@ -17,7 +17,8 @@ gulp.task('default', function (done) {
             'build-app',
             'copy-app-package-file',
             'copy-app-main-file',
-            'copy-photon'
+            'copy-photon',
+            'copy-fonts'
         ],
         'build-html'
     );
@@ -40,8 +41,13 @@ gulp.task('copy-app-main-file', function () {
 });
 
 gulp.task('copy-photon', function () {
-    return gulp.src(['bower_components/photon/dist/css/photon.min.css', 'bower_components/photon/dist/fonts/*'])
+    return gulp.src(['bower_components/photon/dist/css/photon.min.css'])
         .pipe(gulp.dest('dist/components/photon'));
+});
+
+gulp.task('copy-fonts', function(){
+    return gulp.src(['bower_components/photon/dist/fonts/**'])
+        .pipe(gulp.dest('dist/components/fonts'));
 });
 
 gulp.task('build-vendor', function(){
