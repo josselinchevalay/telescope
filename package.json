@@ -33,6 +33,7 @@
     "typescript": "^1.8.10"
   },
   "dependencies": {
+    "@akashaproject/ipfs-connector": "^1.6.9",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "systemjs": "^0.19.27",
