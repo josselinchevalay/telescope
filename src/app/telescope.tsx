@@ -9,7 +9,7 @@ export default class Telescope{
     initialize() {
 
         ReactDOM.render(            
-                <Application context="home"/>,
+                <Application context="Home"/>,
             document.getElementById('telescope')
         );
     }
