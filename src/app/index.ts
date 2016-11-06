@@ -1,6 +1,4 @@
-import Greeting from './greeting';
+import Telescope from './telescope';
 
-const greeting = new Greeting();
-
-greeting.hello();
-
+let telescope = new Telescope();
+telescope.initialize();
