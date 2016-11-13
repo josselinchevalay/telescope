@@ -1,5 +1,5 @@
 import React from 'react';
-
+//import { IpfsConnector } from '@akashaproject/ipfs-connector';
 import AppBody from '../app-body/app-body';
 import BarAction  from '../bar-action/bar-action';
 
