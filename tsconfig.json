@@ -1,19 +1,11 @@
 {
-  "compilerOptions": {
-    "rootDir" : "src/app",
-    "target": "ES5",
-    "module": "system",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "removeComments": false,
-    "noImplicitAny": false,
-    "jsx": "react"
-  },
-  "exclude": [
-    "typings/browser.d.ts",
-    "typings/browser",
-    "node_modules"
-  ]
+    "compilerOptions": {
+        "rootDir": "./src/",
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "target": "es5",
+        "jsx": "react"
+    }
 }

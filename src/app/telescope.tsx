@@ -1,6 +1,6 @@
 import Application from './application/application';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 interface ApplicationState {context:any}
 
