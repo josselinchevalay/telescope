@@ -35,10 +35,11 @@ module.exports = {
             {from:'./node_modules/react/dist/react.js', to:'./components/react/'},
             {from:'./node_modules/react-dom/dist/react-dom.js', to:'./components/react-dom/'},
             {from:'./bower_components/photon/dist/css/photon.min.css', to:'./components/photon/'},
-            {from:'./bower_components/photon/dist/fonts/', to:'./components/fonts'}
+            {from:'./bower_components/photon/dist/fonts/', to:'./components/fonts'},
+            {from:'./node_modules/electron-prebuilt/index.js', to:'./components/electron/electron.js'}
         ]),
         new HtmlWebpackPlugin({
-            injects: ['./components/react/react.js', './components/react-dom/react-dom.js'],
+            injects: ['./components/react/react.js', './components/react-dom/react-dom.js', './components/electron/electron.js'],
             bundle: "./bundle.js",
             template: './src/index.ejs', // Load a custom template (ejs by default see the FAQ for details) 
         })

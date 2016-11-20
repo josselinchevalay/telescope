@@ -22,6 +22,7 @@
   "author": "Claudio Cicali",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^6.0.48",
     "clean-webpack-plugin": "^0.1.14",
     "copy-webpack-plugin": "^4.0.1",
     "del": "^2.2.0",
@@ -41,8 +42,12 @@
   },
   "dependencies": {
     "@akashaproject/ipfs-connector": "1.6.11",
+    "@types/electron": "^1.4.27",
+    "@types/nedb": "0.0.31",
     "@types/react": "^0.14.49",
     "@types/react-dom": "^0.14.18",
+    "configstore": "^2.1.0",
+    "nedb": "^1.8.0",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "systemjs": "^0.19.41",
