@@ -1,6 +1,6 @@
 import Home from '../home/home';
 import Folder from '../folder/folder';
-import React from 'react';
+import * as React from "react";
 
 export interface AppBodyProps  {application:any};
 

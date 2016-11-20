@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from "react";
 
 export interface BarProps {selected: string; application:any }
 
@@ -6,7 +6,7 @@ export interface BarState {selected: string}
 
 export default class BarAction extends React.Component<BarProps, BarState> {
 
-    constructor(props){
+    constructor(props:any){
         super(props);
         this.state = {selected: this.props.selected};
     }
