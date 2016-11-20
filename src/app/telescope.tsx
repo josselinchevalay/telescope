@@ -3,17 +3,16 @@
 import Application from './application/application';
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import IpfsConnector from '../lib/IpfsConnector';
+import { IpfsConnector } from '@akashaproject/ipfs-connector';
 
 interface ApplicationState {context:any}
-const ipfsConnectorInstance = IpfsConnector.getInstance();
 
 export default class Telescope{
 
     initialize() {
 
         ReactDOM.render(            
-                <Application context="Home" IpfsConnector={ipfsConnectorInstance}/>,
+                <Application context="Home" IpfsConnector={IpfsConnector.getInstance()}/>,
             document.getElementById('telescope')
         );
     }
