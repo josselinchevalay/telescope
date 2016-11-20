@@ -37,6 +37,7 @@
     "@akashaproject/ipfs-connector": "1.6.11",
     "@types/react": "^0.14.49",
     "@types/react-dom": "^0.14.18",
+    "node-fetch": "^1.6.3",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "systemjs": "^0.19.41",

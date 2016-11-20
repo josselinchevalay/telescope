@@ -1,8 +1,9 @@
 import * as React from "react";
 import AppBody from '../app-body/app-body';
 import BarAction  from '../bar-action/bar-action';
+import IpfsConnector from '../../lib/IpfsConnector';
 
-export interface ApplicationProps {context: string; IpfsConnector:any }
+export interface ApplicationProps {context: string; IpfsConnector:IpfsConnector }
 
 export interface ApplicationState {context: string}
 
@@ -10,6 +11,9 @@ export default class Application extends React.Component<ApplicationProps, Appli
     constructor(props:any){
         super(props);
         this.state = {context: this.props.context};
+        this.props.IpfsConnector.startDaemon((t)=>{
+            console.log(t);
+        });
     }
     public render(){
         return(

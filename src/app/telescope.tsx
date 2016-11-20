@@ -1,7 +1,9 @@
+"use strict";
+
 import Application from './application/application';
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { IpfsConnector } from '@akashaproject/ipfs-connector';
+import IpfsConnector from '../lib/IpfsConnector';
 
 interface ApplicationState {context:any}
 const ipfsConnectorInstance = IpfsConnector.getInstance();
