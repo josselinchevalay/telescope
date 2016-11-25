@@ -1,10 +1,9 @@
 import * as React from "react";
-//import { IpfsConnector } from '@akashaproject/ipfs-connector';
 import AppBody from '../app-body/app-body';
 import BarAction  from '../bar-action/bar-action';
-import * as Nedb from "nedb"
 
-export interface ApplicationProps {context: string;}
+
+export interface ApplicationProps {context: string; IpfsConnector:any}
 
 export interface ApplicationState {context: string}
 
@@ -12,6 +11,7 @@ export default class Application extends React.Component<ApplicationProps, Appli
     constructor(props:any){
         super(props);
         this.state = {context: this.props.context};
+
     }
     public render(){
         return(
