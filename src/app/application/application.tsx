@@ -1,9 +1,9 @@
 import * as React from "react";
 import AppBody from '../app-body/app-body';
 import BarAction  from '../bar-action/bar-action';
-import {IpfsConnector} from '@akashaproject/ipfs-connector';
 
-export interface ApplicationProps {context: string; IpfsConnector:IpfsConnector }
+
+export interface ApplicationProps {context: string; IpfsConnector:any}
 
 export interface ApplicationState {context: string}
 

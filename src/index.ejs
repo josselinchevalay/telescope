@@ -6,6 +6,9 @@
         <link rel="stylesheet" type="text/css" href="components/photon/photon.min.css">  
     </head>
     <body>
+        <script>
+            var electron = require('electron');
+        </script>
         <div id="telescope"></div>
         <% for (var index in htmlWebpackPlugin.options.injects) { %>
         <script src="<%= htmlWebpackPlugin.options.injects[index] %>"></script>
