@@ -1,4 +1,9 @@
 const electron = require('electron')
+const fs = require('fs');
+const path = require('path');
+const low  = require('lowdb');
+const {ipcMain} = require('electron')
+
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -8,10 +13,37 @@ const BrowserWindow = electron.BrowserWindow
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+const homePath = path.join(app.getPath('home'), '.telecope');
+const databasePath = path.join(homePath, 'database.json')
+let database = {};
+
+if(!fs.existsSync(homePath)){
+  fs.mkdirSync(homePath);
+}
+
+if(!fs.existsSync(databasePath)){
+  fs.writeFileSync(databasePath, '{"config":{}}');
+}
+
+database = low(databasePath);
+
+
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({
+    width: 800, 
+    height: 600,
+  })
+ 
+  //db event 
+  ipcMain.on('SYNC-DB-CONFIG-GET', (event, arg) => {
+    event.returnValue = database.get("config").value();
+  });
 
+  ipcMain.on('SYNC-DB-CONFIG-UPDATE', (event, arg)=>{
+    event.returnValue = database.set("config", arg).value();
+  });
+  
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`)
   
