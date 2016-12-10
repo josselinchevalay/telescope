@@ -6,7 +6,7 @@ addons:
       - google-chrome
     packages:
       - google-chrome-stable
-language: node
+language: node_js
 node:
   - "6"
   - "6.1"
