@@ -6,7 +6,7 @@ node:
   - "5.11"
   - "0.6"
   - "iojs"
-before-script:
+install:
   - npm install -g webpack typescript tsd typings
   - npm install
 script: npm run build
