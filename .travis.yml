@@ -1,0 +1,12 @@
+sudo: required
+language: node
+node:
+  - "6"
+  - "6.1"
+  - "5.11"
+  - "0.6"
+  - "iojs"
+before-script:
+  - npm install -g webpack typescript tsd typings
+  - npm install
+script: npm run build
