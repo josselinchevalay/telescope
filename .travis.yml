@@ -3,6 +3,10 @@ language: node
 node:
   - "6"
   - "6.1"
+cache:
+    direcotries:
+        - electron
+        - node_modules
 install:
   - npm install -g webpack typescript tsd typings
   - npm install
