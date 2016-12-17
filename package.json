@@ -42,6 +42,7 @@
     "@types/react-dom": "^0.14.18",
     "electron": "^1.4.10",
     "ipfs-api": "^12.0.0",
+    "ipfs-daemon": "^0.3.0-beta.11",
     "lowdb": "^0.14.0",
     "nedb": "^1.8.0",
     "react": "^15.4.0",
