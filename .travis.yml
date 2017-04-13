@@ -19,7 +19,5 @@ cache:
         - electron
         - node_modules
 install:
-  - npm install -g npm@next
-  - npm install -g webpack typescript tsd typings
   - npm install
-script: npm run build
+script: npm test
