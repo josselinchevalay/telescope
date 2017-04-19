@@ -22,7 +22,17 @@ describe('fileSystemApi', () => {
             expect(FileSystemApi.exist(successSyncPath)).to.equals(false);
         });
     });
-
+    /**
+     * baseName section
+     */
+    describe('baseName', () => {
+        it('sucess', () =>{
+            expect(FileSystemApi.basename(successSyncPath)).to.equal('hello-sync.txt');
+        });
+        it('fail', () =>{
+            expect(FileSystemApi.basename(failPath)).to.equal(false);
+        });
+    });
     /**
      * section Method isPath
      */

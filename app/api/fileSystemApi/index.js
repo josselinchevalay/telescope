@@ -25,6 +25,13 @@ var fsAPI = function() {
         }
     };
 
+    this.basename = (filePath) =>{
+        if(this.isPath(filePath))
+            return path.basename(filePath);
+        else
+            return false;
+    };
+
     this.getStat = (filePath) => {
         return fs.statSync(filePath);
     };
