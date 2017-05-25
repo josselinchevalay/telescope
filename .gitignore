@@ -3,3 +3,5 @@ config
 dist
 bower_components
 .vscode
+
+out/

@@ -7,6 +7,6 @@ module.exports = function(lowDbProvider) {
     };
 
     this.set = (params, value) => {
-        return this.provider.set(this.CONFIG + "." + params, value).write();
+        return this.provider.set((params !== "") ? this.CONFIG + "." + params : this.CONFIG, value).write();
     };
 };

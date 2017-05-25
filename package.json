@@ -2,12 +2,15 @@
   "name": "telescope",
   "version": "1.0.0",
   "description": "",
-  "main": "webpack.config.js",
+  "main": "src/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha ./test/**/*.js"
+    "test": "mocha ./test/**/*.js",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "repository": {
     "type": "git",
@@ -20,16 +23,48 @@
   },
   "homepage": "https://github.com/josselinchevalay/telescope#readme",
   "dependencies": {
-    "ipfs": "^0.23.1",
-    "leveldown": "^1.6.0",
+    "@akashaproject/ipfs-connector": "^1.9.2",
+    "electron-compile": "^6.4.0",
     "lodash": "^4.17.4",
     "lowdb": "^0.16.2",
     "mkdirp": "^0.5.1",
-    "webpack": "^2.3.3",
-    "wrtc": "0.0.61"
+    "webpack": "^2.3.3"
   },
   "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-react": "^6.24.1",
     "chai": "^3.5.0",
+    "electron-prebuilt-compile": "1.6.2",
     "mocha": "^3.2.0"
+  },
+  "config": {
+    "forge": {
+      "make_targets": {
+        "win32": [
+          "squirrel"
+        ],
+        "darwin": [
+          "zip"
+        ],
+        "linux": [
+          "deb",
+          "rpm"
+        ]
+      },
+      "electronPackagerConfig": {},
+      "electronWinstallerConfig": {
+        "name": ""
+      },
+      "electronInstallerDebian": {},
+      "electronInstallerRedhat": {},
+      "github_repository": {
+        "owner": "",
+        "name": ""
+      },
+      "windowsStoreConfig": {
+        "packageName": ""
+      }
+    }
   }
 }
