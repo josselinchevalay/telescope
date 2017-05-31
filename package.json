@@ -1,0 +1,65 @@
+{
+  "name": "electron-app-ipfs",
+  "productName": "electron-app-ipfs",
+  "version": "1.0.0",
+  "description": "My Electron application description",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [],
+  "author": "josselin",
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "make_targets": {
+        "win32": [
+          "squirrel"
+        ],
+        "darwin": [
+          "zip"
+        ],
+        "linux": [
+          "deb",
+          "rpm"
+        ]
+      },
+      "electronPackagerConfig": {},
+      "electronWinstallerConfig": {
+        "name": "electron_app_ipfs"
+      },
+      "electronInstallerDebian": {},
+      "electronInstallerRedhat": {},
+      "github_repository": {
+        "owner": "",
+        "name": ""
+      },
+      "windowsStoreConfig": {
+        "packageName": "",
+        "name": "electronappipfs"
+      }
+    }
+  },
+  "dependencies": {
+    "@akashaproject/ipfs-connector": "^1.9.2",
+    "electron-compile": "^6.4.1",
+    "electron-devtools-installer": "^2.2.0",
+    "lowdb": "^0.16.2",
+    "mkdirp": "^0.5.1",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-hot-loader": "^3.0.0-beta.7",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-es2015-classes": "^6.24.1",
+    "babel-preset-env": "^1.5.1",
+    "babel-preset-react": "^6.24.1",
+    "electron-prebuilt-compile": "1.6.8",
+    "electron-rebuild": "^1.5.11"
+  }
+}
