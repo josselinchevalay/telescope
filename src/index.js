@@ -1,8 +1,11 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
 import { IpfsConnector } from '@akashaproject/ipfs-connector';
-import Logger from './services/logger'
+import IpfsEventService from './services/api/event/EventIpfs';
+import IpfsTopics from './services/api/event/EventIpfs/topics';
+import Logger from './services/logger';
+
 const instance = IpfsConnector.getInstance();
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -35,7 +38,6 @@ const createWindow = async () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    instance.stop()
     mainWindow = null;
   });
 };
@@ -46,6 +48,7 @@ const createWindow = async () => {
 app.on('ready', () => {
   logger.debug('electon is ready wait run ipfs daemon ....')
   instance.start().then((api) => {
+        var event = new IpfsEventService(ipcMain, api);
         logger.debug('ipfs daemon is started display  main windows');
         createWindow();
   });
@@ -55,6 +58,7 @@ app.on('ready', () => {
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+  instance.stop();
   if (process.platform !== 'darwin') {
     app.quit();
   }

@@ -8,7 +8,8 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "test": "mocha --reporter spec --recursive "
   },
   "keywords": [],
   "author": "josselin",
@@ -59,7 +60,10 @@
     "babel-plugin-transform-es2015-classes": "^6.24.1",
     "babel-preset-env": "^1.5.1",
     "babel-preset-react": "^6.24.1",
+    "chai": "^4.0.1",
+    "electron-ipc-mock": "0.0.2",
     "electron-prebuilt-compile": "1.6.8",
-    "electron-rebuild": "^1.5.11"
+    "electron-rebuild": "^1.5.11",
+    "mocha": "^3.4.2"
   }
 }
