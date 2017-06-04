@@ -31,7 +31,7 @@ export default class BarAction extends Component{
 
     sendConfig() {
         var state = this.state;
-        console.log(ipcRenderer.sendSync(TelescopConfigEventTopics.CONFIG_SET, JSON.stringify(state.config)));
+        ipcRenderer.send(TelescopConfigEventTopics.CONFIG_SET, JSON.stringify(state.config));
     }
 
 

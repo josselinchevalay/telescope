@@ -1,4 +1,5 @@
 import PersistenceFactory  from '../../../../persistence/persistenceFactory';
+import NotificationTopics from '../../EventNotification/topics';
 import LoggerService from '../../../../logger';
 
 const logger = new LoggerService();
@@ -12,5 +13,5 @@ export default function(event, data){
     var config  = JSON.parse(data);
     configDao.set("",config);
     logger.debug("telescop/config/set data = ", data);
-    event.returnValue = JSON.stringify(configDao.get("")); // TODO replace later by notification send
+    event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({message:"config saved !", level:"success", autoDismiss:2}));
 };

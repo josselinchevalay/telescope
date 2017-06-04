@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-//import styles from './bar-action.css';
-
 
 const MenuItems = [
     "Files",
