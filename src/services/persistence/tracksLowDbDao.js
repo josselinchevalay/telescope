@@ -1,29 +1,32 @@
-module.exports = function(lowDbProvider) {
-    this.provider = lowDbProvider;
-    this.TRACKS = 'tracks';
+export default class TracksLowDbDao {
 
-    this.initialize = () => {
+    constructor(lowDbProvider) {
+        this.provider = lowDbProvider;
+        this.TRACKS = 'tracks';
+    }
+
+    initialize(){
         if (this.provider.has(this.TRACKS).value() === false)
             this.provider.set(this.TRACKS, []).write();
-    };
+    }
 
-    this.get = () => {
+    get() {
         this.initialize();
         return this.provider.get(this.TRACKS).value();
-    };
+    }
 
-    this.findById = (id) => {
+    findById(id){
         this.initialize();
         return this.provider.get(this.TRACKS).find({ _id: id }).value();
-    };
+    }
 
-    this.create = (entity) => {
+    create(entity){
         this.initialize();
         return this.provider.get(this.TRACKS).push(entity).write();
-    };
+    }
 
-    this.update = (entity) => {
+    update(entity){
         this.initialize();
         return this.provider.get(this.TRACKS).find({ _id: entity._id }).assign(entity).write();
-    };
+    }
 };

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import IpfsTopics from '../services/api/event/EventIpfs/topics';
+import TelescopConfigEventTopics from '../services/api/event/EventConfig/topics';
 
 const {ipcRenderer} = require('electron');
 
 export default class BarAction extends Component{ 
     constructor (props){
         super(props);
-        //var ipfsInstanceConfig = JSON.parse(ipcRenderer.sendSync(IpfsTopics.CONFIG_GET, ''));
         this.state  =  {config:{"timeIPFSHeartBeat":6000,"autoSync":false}};
         this.getConfig();
         this.getIpfsDaemonConfig();
@@ -16,8 +16,10 @@ export default class BarAction extends Component{
     }
 
     getConfig(){
-        var state  =  {config:{"timeIPFSHeartBeat":6000,"autoSync":false}};
-        var self = this;
+        var config  = JSON.parse(ipcRenderer.sendSync(TelescopConfigEventTopics.CONFIG_GET, ''));
+        var state = this.state;
+        state.config = config;
+        this.setState(state);
     }
 
     getIpfsDaemonConfig() {
@@ -28,7 +30,8 @@ export default class BarAction extends Component{
     }
 
     sendConfig() {
-        var self = th
+        var state = this.state;
+        console.log(ipcRenderer.sendSync(TelescopConfigEventTopics.CONFIG_SET, JSON.stringify(state.config)));
     }
 
 
@@ -39,13 +42,9 @@ export default class BarAction extends Component{
     }
 
     UpdateAutoSync(event){
-        let config = this.state.config;
-        let value = event.target.value;
-        if(config.autoSync === value) {
-            config.autoSync = false;
-        }else {
-            config.autoSync = value;
-        }
+        var config = this.state.config;
+        var value = event.target.checked;
+        config.autoSync = value;
         this.setState({config:config});
         return false;
     }
@@ -53,7 +52,7 @@ export default class BarAction extends Component{
     render() {
         return (
             <div>
-                <h1 className="page-header">Configuration </h1>
+                <h1 className="page-header">Configuration</h1>
                     <div>
                         <label> PeerId : {this.state.ipfs.Identity.PeerID}</label>
                     </div>
@@ -64,7 +63,7 @@ export default class BarAction extends Component{
                     <label htmlFor="autosync">Auto Synchronisation</label>
                     <div className="input-group">
                         <label id="autosync" className="switch">
-                            <input type="checkbox" onChange={this.handleAutoSync}/>
+                            <input type="checkbox" onChange={this.handleAutoSync} checked={this.state.config.autoSync} />
                             <div className="slider round"></div>
                         </label>
                     </div>

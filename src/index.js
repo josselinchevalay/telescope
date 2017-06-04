@@ -3,7 +3,7 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-insta
 import { enableLiveReload } from 'electron-compile';
 import { IpfsConnector } from '@akashaproject/ipfs-connector';
 import IpfsEventService from './services/api/event/EventIpfs';
-import IpfsTopics from './services/api/event/EventIpfs/topics';
+import TelescopConfigEventService from './services/api/event/EventConfig';
 import Logger from './services/logger';
 
 const instance = IpfsConnector.getInstance();
@@ -48,7 +48,8 @@ const createWindow = async () => {
 app.on('ready', () => {
   logger.debug('electon is ready wait run ipfs daemon ....')
   instance.start().then((api) => {
-        var event = new IpfsEventService(ipcMain, api);
+        var eventIpfs = new IpfsEventService(ipcMain, api);
+        var eventTelescopConfig = new TelescopConfigEventService(ipcMain);
         logger.debug('ipfs daemon is started display  main windows');
         createWindow();
   });
