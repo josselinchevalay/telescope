@@ -1,12 +1,15 @@
-module.exports = function(lowDbProvider) {
-    this.provider = lowDbProvider;
-    this.CONFIG = 'config';
+export default class ConfigLowDbDao {
 
-    this.get = (params) => {
-        return this.provider.get((params) ? this.CONFIG + "." + params : this.CONFIG).value();
-    };
+    constructor(lowDbProvider){
+        this.provider = lowDbProvider;
+        this.CONFIG = 'config';
+    }
 
-    this.set = (params, value) => {
+    get(params){
+        return this.provider.get((params !=="") ? this.CONFIG + "." + params : this.CONFIG).value();
+    }
+
+    set(params, value){
         return this.provider.set((params !== "") ? this.CONFIG + "." + params : this.CONFIG, value).write();
-    };
-};
+    }
+}
