@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
-
+const crypto = require('crypto');
+const mime = require('mime-types')
 
 var fsAPI = function() {
     'use strict';
@@ -22,6 +23,14 @@ var fsAPI = function() {
             return false;
         } else {
             return filePath.indexOf(path.sep) > -1;
+        }
+    };
+
+    this.isDirectory = (filePath) =>{
+        if(this.exist(filePath)){
+            return this.getStat(filePath).isDirectory();
+        }else{
+            return false;
         }
     };
 
@@ -113,18 +122,60 @@ var fsAPI = function() {
             }
 
         });
-
-
-        /*return new Promise((resolver, reject) => {
-            if (this.exist(filePath))
-                reject({});
-
-            mkdirp(filePath, (err) => {
-                if (err) reject(err);
-                resolver();
-            });
-        });*/
     };
+
+    this.checksumFile = (filePath) => {
+        if (this.exist(filePath)) {
+            return this._checksum(fs.readFileSync(filePath), 'sha256');
+        }else {
+            return false;
+        }
+    };
+
+    this.getMimeType = (filePath) => {
+        return mime.lookup(filePath);
+    }
+
+    this.checksumDirectory = (filePath) => {
+        var hashTree = "";
+        var children = fs.readdirSync(filePath);
+        children.forEach((child)=>{
+            var childpath  = path.join(filePath, child);
+            if(this.isDirectory(childpath)){
+                hashTree =  hashTree + this.checksumDirectory(childpath);
+            }else{
+                hashTree = hashTree + this.checksumFile(childpath);
+            }
+        });
+        return this._checksum(hashTree);
+    }
+
+    this.readDir = (filePath) =>{
+        if(this.isDirectory(filePath)){
+            return fs.readdirSync(filePath);
+        }else{
+            return false;
+        }
+    }
+
+    this.checksum = (filePath) => {
+        if(this.exist(filePath)){
+            if(this.isDirectory(filePath)){
+                return this.checksumDirectory(filePath);
+            }else{
+                return this.checksumFile(filePath);
+            }
+        }else{
+            return false;
+        }
+    }
+
+    this._checksum = (str, algorithm, encoding) => {
+        return crypto
+            .createHash(algorithm || 'md5')
+            .update(str, 'utf8')
+            .digest(encoding || 'hex')
+    }
 };
 
 module.exports = new fsAPI();

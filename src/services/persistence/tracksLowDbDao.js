@@ -20,6 +20,11 @@ export default class TracksLowDbDao {
         return this.provider.get(this.TRACKS).find({ _id: id }).value();
     }
 
+    findByPath(path){
+        this.initialize();
+        return this.provider.get(this.TRACKS).find({path: path}).value();
+    }
+
     create(entity){
         this.initialize();
         return this.provider.get(this.TRACKS).push(entity).write();
@@ -27,6 +32,6 @@ export default class TracksLowDbDao {
 
     update(entity){
         this.initialize();
-        return this.provider.get(this.TRACKS).find({ _id: entity._id }).assign(entity).write();
+        return this.provider.get(this.TRACKS).find({ path: entity.path }).assign(entity).write();
     }
 };

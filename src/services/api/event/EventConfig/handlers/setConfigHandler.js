@@ -13,5 +13,5 @@ export default function(event, data){
     var config  = JSON.parse(data);
     configDao.set("",config);
     logger.debug("telescop/config/set data = ", data);
-    event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({message:"config saved !", level:"success", autoDismiss:2}));
+    event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({message:"Configuration saved ! Please restart application !", level:"success", autoDismiss:2}));
 };
