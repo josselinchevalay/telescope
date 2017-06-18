@@ -4,6 +4,7 @@ import { enableLiveReload } from 'electron-compile';
 import { IpfsConnector } from '@akashaproject/ipfs-connector';
 import IpfsEventService from './services/api/event/EventIpfs';
 import TelescopConfigEventService from './services/api/event/EventConfig';
+import TelecopEventService from './services/api/event/EventTelescop';
 import Logger from './services/logger';
 
 const instance = IpfsConnector.getInstance();
@@ -50,6 +51,7 @@ app.on('ready', () => {
   instance.start().then((api) => {
         var eventIpfs = new IpfsEventService(ipcMain, api);
         var eventTelescopConfig = new TelescopConfigEventService(ipcMain);
+        var eventTelescop = new TelecopEventService(ipcMain,api);
         logger.debug('ipfs daemon is started display  main windows');
         createWindow();
   });

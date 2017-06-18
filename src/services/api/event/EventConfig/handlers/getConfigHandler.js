@@ -11,6 +11,6 @@ export default function(event, data){
     var provider = PersistenceFactory.getPorvider(PersistenceFactory.LOWDB);
     var connection  = provider.createConnection(provider.DBPATH);
     var configDao  = provider.getConfigDao(connection);    
-    var config = configDao.get("");
+    var config = configDao.get("") || "";
     event.returnValue = JSON.stringify(config); // TODO replace later by notification send
 };
