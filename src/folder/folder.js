@@ -9,6 +9,7 @@ export default class FolderPage extends Component{
     }
 
     render(){
+        console.log(TopicsTelecopEvent.GET_FILES);
         console.log(ipcRenderer.sendSync(TopicsTelecopEvent.GET_FILES, ""));
         return (
             <div>
