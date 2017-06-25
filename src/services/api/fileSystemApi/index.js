@@ -3,6 +3,7 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const crypto = require('crypto');
 const mime = require('mime-types')
+const _ = require('lodash');
 
 var fsAPI = function() {
     'use strict';
@@ -176,6 +177,22 @@ var fsAPI = function() {
             .update(str, 'utf8')
             .digest(encoding || 'hex')
     }
+
+    this.parent = (path1, path2) => {
+        if(path1 === path2)
+            return -99;
+        var longest = (path1 > path2) ? path1 : path2;
+        var minest = (path1 < path2) ? path1  : path2;
+        if(_.includes(longest, minest)){
+            if(path1.length < path2.length)
+            return 1;
+            else
+            return -1;
+        }else{
+            return 0;
+        }
+    }
+
 };
 
 module.exports = new fsAPI();

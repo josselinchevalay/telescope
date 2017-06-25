@@ -9,16 +9,26 @@ const logger = new LoggerService();
 logger.level = "debug";
 const _ = require('lodash');
 
+function checkisRoot(path, paths){
+     var parents = paths.filter((p) => { return FileSystemApi.parent(path, p) === -1;});
+     if(parents.length == 0 ){
+         return true;
+     }else {
+        return false;
+     }     
+}
+
 function reachChildByPath(tracks, path){
      var directories = tracks.filter((element) => {
          if(path !== "")
-            return element.type === "os/directory" && element.path.length > path.length && _.includes(element.path, path);
+            return element.type === "os/directory" && FileSystemApi.parent(path , element.path) === 1;
         else
-         return element.type === "os/directory"
+         return element.type === "os/directory" && checkisRoot(element.path , tracks.map((e) => {return e.path;}));
     });
     var pathDirParent = directories.map((element) => {
         return element.path;
     });
+    //console.log(pathDirParent);
     var allfilesWithoutDirectory =  _.without(tracks.filter((e) =>{
         if(path !=="")
             return _.includes(e.path, path) && e.type !== "os/directory";
@@ -31,6 +41,7 @@ function reachChildByPath(tracks, path){
             else
                 return true;
     });
+    //console.log(directories);
     return [].concat(directories, allFilesWithoutParent);
 }
 

@@ -23,7 +23,7 @@ export default class FolderPage extends Component{
     increment(event){
         var state = this.state;
         var data = event.target.dataset;
-        state.contextName = data.name;
+        state.contextName += ">" +  data.name;
         state.contextPath = data.path;
         this.setState(state);
         this.getFiles();
@@ -32,9 +32,8 @@ export default class FolderPage extends Component{
     decrement(event){
         var state = this.state;
         if(state.contextName !== ""){
-            var data = event.target.dataset;
             var tree = state.contextName.split(">");
-            state.contextName = _.without(tree, tree.splice(-1));
+            state.contextName = _.without(tree, tree.splice(-1)).join('>');
             if(tree.length = 1){
                 state.contextPath = "";
             }else{
@@ -48,7 +47,7 @@ export default class FolderPage extends Component{
     render(){
         return (
             <div>
-                <h1 onClick={this.decrementHandler}>{this.props.application.state.context } { (this.state.contextName ) ? ">" + this.state.contextName : ""} </h1>
+                <h1 onClick={this.decrementHandler}>{this.props.application.state.context } { (this.state.contextName ) ? this.state.contextName : ""} </h1>
                 <div>
                     <ul>
                         {
