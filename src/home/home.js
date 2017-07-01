@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import TopicsTelecopEvent from '../services/api/event/EventTelescop/topics';
+import TileFile from './tileFile';
 
 const {ipcRenderer} = require('electron');
 const _ = require('lodash');
 
-const styleImgTopCard = {
-     "font-size" : '5em'
-}
+
 export default class FolderPage extends Component{
 
     getFiles(){
@@ -20,7 +19,7 @@ export default class FolderPage extends Component{
         this.state = {files : [], contextName : "" , contextPath: ""};
         this.getFiles();
         this.decrementHandler = this.decrement.bind(this);
-        this.incrementHandler = this.increment.bind(this);       
+        this.incrementHandler = this.increment.bind(this);  
     }
 
     increment(event){
@@ -53,34 +52,13 @@ export default class FolderPage extends Component{
         }
     }
 
-    tileRender(file){
-        if(file.type === "os/directory")
-            return  <li className="glyphicon glyphicon-folder-close" key={file.name.toString()} > {file.name }</li>;
-        else
-            return <li className="glyphicon glyphicon-picture" key={file.name.toString()}> {file.name }</li>;
-    }
-
     render(){
         return (
             <div>
                 <h1 onClick={this.decrementHandler}>{this.props.application.state.context } { (this.state.contextName ) ? this.state.contextName : ""} </h1>
                     <div className="flex-row">
                         {this.state.files.map((file) => {
-                             if(file.type === "os/directory"){
-                                return  <div className="col-xs-6 col-sm-4 col-lg-3 card">
-                                            <span className="card-img-top glyphicon glyphicon-folder-close" style={styleImgTopCard} onClick={this.incrementHandler} data-name={file.name} data-path={file.path}></span>
-                                            <div class="card-block">
-                                                <h4 className="card-title">{file.name}</h4>
-                                            </div>
-                                        </div>;
-                             } else {
-                                return <div className="col-xs-4 col-sm-2 col-lg-3 card" >
-                                            <span className="card-img-top glyphicon glyphicon-file" style={styleImgTopCard}></span>
-                                            <div class="card-block">
-                                                 <h4 className="card-title">{file.name}</h4>
-                                             </div>
-                                        </div>;
-                                }
+                            return  <TileFile file={file} parent={this} key={file.path}/>;
                         })}
                     </div>
             </div>
