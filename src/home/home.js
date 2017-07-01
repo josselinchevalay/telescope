@@ -34,30 +34,39 @@ export default class FolderPage extends Component{
         if(state.contextName !== ""){
             var tree = state.contextName.split(">");
             state.contextName = _.without(tree, tree.splice(-1)).join('>');
-            if(tree.length = 1){
+            if(tree.length == 1){
                 state.contextPath = "";
             }else{
-
+                var backslash = (state.contextPath.indexOf('\\') > -1 ) ? true : false;
+                var FileSperator = (backslash) ? '\\' : '\/';
+                var treePath = state.contextPath.split(FileSperator);
+                delete treePath[treePath.length -1];
+                state.contextPath = treePath.join(FileSperator);
             }
             this.setState(state);
             this.getFiles();
         }
     }
 
+    tileRender(file){
+        if(file.type === "os/directory")
+            return  <li className="glyphicon glyphicon-folder-close" key={file.name.toString()} onClick={this.incrementHandler} data-name={file.name} data-path={file.path}> {file.name }</li>;
+        else
+            return <li className="glyphicon glyphicon-picture" key={file.name.toString()}> {file.name }</li>;
+    }
+
     render(){
         return (
             <div>
                 <h1 onClick={this.decrementHandler}>{this.props.application.state.context } { (this.state.contextName ) ? this.state.contextName : ""} </h1>
-                <div>
+                <div className="hero-unit">
                     <ul>
-                        {
-                            this.state.files.map((file)=>{
-                                if(file.type === "os/directory")
-                                    return <li className="glyphicon glyphicon-folder-close" key={file.name.toString()} onClick={this.incrementHandler} data-name={file.name} data-path={file.path}> {file.name }</li>;
-                                else
-                                    return <li className="glyphicon glyphicon-picture" key={file.name.toString()}> {file.name }</li>;
-                            })
-                        }
+                        {this.state.files.map((file) => {
+                             if(file.type === "os/directory")
+                                return  <li className="glyphicon glyphicon-folder-close" key={file.name.toString()} onClick={this.incrementHandler} data-name={file.name} data-path={file.path}> {file.name }</li>;
+                            else
+                                return <li className="glyphicon glyphicon-picture" key={file.name.toString()} > {file.name }</li>;
+                        },this)}
                     </ul>
                 </div>
             </div>
