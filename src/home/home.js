@@ -4,6 +4,9 @@ import TopicsTelecopEvent from '../services/api/event/EventTelescop/topics';
 const {ipcRenderer} = require('electron');
 const _ = require('lodash');
 
+const styleImgTopCard = {
+     "font-size" : '5em'
+}
 export default class FolderPage extends Component{
 
     getFiles(){
@@ -23,6 +26,8 @@ export default class FolderPage extends Component{
     increment(event){
         var state = this.state;
         var data = event.target.dataset;
+        console.log(event);
+        console.log(data);
         state.contextName += ">" +  data.name;
         state.contextPath = data.path;
         this.setState(state);
@@ -50,7 +55,7 @@ export default class FolderPage extends Component{
 
     tileRender(file){
         if(file.type === "os/directory")
-            return  <li className="glyphicon glyphicon-folder-close" key={file.name.toString()} onClick={this.incrementHandler} data-name={file.name} data-path={file.path}> {file.name }</li>;
+            return  <li className="glyphicon glyphicon-folder-close" key={file.name.toString()} > {file.name }</li>;
         else
             return <li className="glyphicon glyphicon-picture" key={file.name.toString()}> {file.name }</li>;
     }
@@ -59,16 +64,25 @@ export default class FolderPage extends Component{
         return (
             <div>
                 <h1 onClick={this.decrementHandler}>{this.props.application.state.context } { (this.state.contextName ) ? this.state.contextName : ""} </h1>
-                <div className="hero-unit">
-                    <ul>
+                    <div className="flex-row">
                         {this.state.files.map((file) => {
-                             if(file.type === "os/directory")
-                                return  <li className="glyphicon glyphicon-folder-close" key={file.name.toString()} onClick={this.incrementHandler} data-name={file.name} data-path={file.path}> {file.name }</li>;
-                            else
-                                return <li className="glyphicon glyphicon-picture" key={file.name.toString()} > {file.name }</li>;
-                        },this)}
-                    </ul>
-                </div>
+                             if(file.type === "os/directory"){
+                                return  <div className="col-xs-6 col-sm-4 col-lg-3 card">
+                                            <span className="card-img-top glyphicon glyphicon-folder-close" style={styleImgTopCard} onClick={this.incrementHandler} data-name={file.name} data-path={file.path}></span>
+                                            <div class="card-block">
+                                                <h4 className="card-title">{file.name}</h4>
+                                            </div>
+                                        </div>;
+                             } else {
+                                return <div className="col-xs-4 col-sm-2 col-lg-3 card" >
+                                            <span className="card-img-top glyphicon glyphicon-file" style={styleImgTopCard}></span>
+                                            <div class="card-block">
+                                                 <h4 className="card-title">{file.name}</h4>
+                                             </div>
+                                        </div>;
+                                }
+                        })}
+                    </div>
             </div>
         );
     }
