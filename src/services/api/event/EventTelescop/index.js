@@ -1,9 +1,11 @@
 import EventService from '../index';
 import LoggerService from '../../../logger';
 import getAllFilesHandler from './handlers/getAllFilesHandler';
+import shareHashHandler from './handlers/shareHashHandler';
 
 const logger = new LoggerService();
 logger.level = "debug";
+
 export default class IpfsEventService {
 
     constructor(ipc, ipfsApi){
@@ -11,7 +13,8 @@ export default class IpfsEventService {
         this.ipfsApi = ipfsApi;
 
         this.handlers = {
-            "telescop/file/all" : getAllFilesHandler.bind(this)
+            "telescop/file/all" : getAllFilesHandler.bind(this),
+            "telescop/ipfs/share" : shareHashHandler.bind(this)
         }
         this.initialize();
     };
