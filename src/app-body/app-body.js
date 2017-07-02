@@ -2,6 +2,7 @@ import Home from '../home/home';
 import Folder from '../folder/folder';
 import About from '../about/about';
 import Config from '../config/index';
+import History from '../history/history';
 import React, { Component } from 'react';
 
 
@@ -16,6 +17,8 @@ export default class AppBody extends Component{
                 return <About />
             case "Config" : 
                 return <Config />
+            case "History":
+                return <History application={this.props.application} />
             case "Files":
             default:
                 return <Home application={this.props.application}/>;

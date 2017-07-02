@@ -17,9 +17,11 @@ export default class BarAction extends Component{
 
     getConfig(){
         var config  = JSON.parse(ipcRenderer.sendSync(TelescopConfigEventTopics.CONFIG_GET, ''));
-        var state = this.state;
-        state.config = config;
-        this.setState(state);
+        if(config){
+            var state = this.state;
+            state.config = config;
+            this.setState(state);
+        }
     }
 
     getIpfsDaemonConfig() {
