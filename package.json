@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "@akashaproject/ipfs-connector": "^1.9.2",
+    "d3": "^4.9.1",
     "electron-compile": "^6.4.1",
     "electron-devtools-installer": "^2.2.0",
     "jsonpath": "^0.2.11",
