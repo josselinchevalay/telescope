@@ -7,199 +7,219 @@ export default class HistoryPage extends Component{
     
     constructor(props){
         super(props);
-        var state = {file : this.props.application.state.file};
+        var state = {file : this.props.application.state.file, 
+                    currentCommit : this.props.application.state.file.latestCid,
+                    zoomX : 0,
+                    zoomY : 0,
+                    zoomK : 1,
+                    zoomSpeed : 50,
+                    zoomMax : -1 *  (this.props.application.state.file.cids.length * 150)
+                };
         this.state = state;
         
     }
 
     componentDidMount() {
         this.drawGraphic();
-     }
+    }
+
+
     drawGraphic() {
+            var self = this;
+            var treeData = this.unflattern(this.state.file.cids);
+
+            var margin = { top: 20, right: 90, bottom: 30, left: 90 },
+            width = 520 - margin.left - margin.right,
+            height = 250 - margin.top - margin.bottom;
+
+            // append the svg object to the body of the page
+            // appends a 'group' element to 'svg'
+            // moves the 'group' element to the top left margin
+            var svg = d3.select("#chartHistory svg")
+            .attr("width", width + margin.right + margin.left)
+            .attr("height", height + margin.top + margin.bottom)
+            .on('mousewheel', zoom)
+            .append("g")
+            .attr("transform", "translate(" +margin.left + "," + margin.top + ")");
+
+            function zoom(){
+                var state = self.state;
+                var deltaY = event.deltaY;
+                console.log(state.zoomMax)
+                if(deltaY > 0){
+                    state.zoomX = (state.zoomX <= state.zoomMax) ? state.zoomMax : state.zoomX - state.zoomSpeed;
+                }else{
+                     state.zoomX = (state.zoomX >= 25 ) ? 25 : state.zoomX + state.zoomSpeed;
+                }
+                svg.attr('transform', 'translate(' + state.zoomX + ',' + state.zoomY + ') scale(' + state.zoomK + ')');
+                self.setState(state)
+            }
+            
+            var i = 0,
+            duration = 750,
+            root;
+
+            // declares a tree layout and assigns the size
+            var treemap = d3.tree().size([height, width]);
+
+            // Assigns parent, children, height, depth
+            root = d3.hierarchy(treeData, function(d) { return (d.children) ? d.children : d; });
+            root.x0 = height / 2;
+            root.y0 = 0;
+
+            update(root);
+
+            function update(source) {
+
+            // Assigns the x and y position for the nodes
+            var treeData = treemap(root);
+
+            // Compute the new tree layout.
+            var nodes = treeData.descendants(),
+            links = treeData.descendants().slice(1);
+
+            // Normalize for fixed-depth.
+            nodes.forEach(function(d) { d.y = d.depth * 180 });
+
+            // ****************** Nodes section ***************************
+
+            // Update the nodes...
+            var node = svg.selectAll('g.node')
+            .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+            // Enter any new modes at the parent's previous position.
+            var nodeEnter = node.enter().append('g')
+            .attr('class', 'node')
+            .attr("transform", function(d) {
+            return "translate(" + source.y0 + "," + source.x0 + ")";
+            })
+            .on('dblclick', doubleclickHandler)
+            .on('click', clikcHandler);
+
+            // Add Circle for the nodes
+            nodeEnter.append('circle')
+            .attr('class', 'node')
+            .attr('r', 1e-6)
+            .style("fill", function(d) {
+                return d._children ? "red" : "#fff";
+            });
+
+            // Add labels for the nodes
+            nodeEnter.append('text')
+            .attr("dy", ".35em")
+            .attr("x", function(d) {
+            return d.children || d._children ? -13 : 13;
+            })
+            .attr("text-anchor", function(d) {
+            return d.children || d._children ? "end" : "start";
+            })
+            .text(function(d) { return (d.data.hash) ? d.data.hash.substring(0, 10) : ""; });
+
+            // UPDATE
+            var nodeUpdate = nodeEnter.merge(node);
+
+            // Transition to the proper position for the node
+            nodeUpdate.transition()
+            .duration(duration)
+            .attr("transform", function(d) {
+            return "translate(" + d.y + "," + d.x + ")";
+            });
+
+            // Update the node attributes and style
+            nodeUpdate.select('circle.node')
+            .attr('r', 10)
+            .style("fill", function(d) {
+                if(self.state.currentCommit.hash === d.data.hash)
+                    return d._children ? "lightsteelblue" : "#0f0";
+                else
+                  return d._children ? "lightsteelblue" : "#fff";  
+            })
+            .attr('cursor', 'pointer');
 
 
-var treeData = this.unflattern(this.state.file.cids);
+            // Remove any exiting nodes
+            var nodeExit = node.exit().transition()
+            .duration(duration)
+            .attr("transform", function(d) {
+            return "translate(" + source.y + "," + source.x + ")";
+            })
+            .remove();
 
-var margin = { top: 20, right: 90, bottom: 30, left: 90 },
- width = 5012 - margin.left - margin.right,
- height = 500 - margin.top - margin.bottom;
+            // On exit reduce the node circles size to 0
+            nodeExit.select('circle')
+            .attr('r', 1e-6);
 
-// append the svg object to the body of the page
-// appends a 'group' element to 'svg'
-// moves the 'group' element to the top left margin
-var svg = d3.select("#chartHistory svg")
- .attr("width", width + margin.right + margin.left)
- .attr("height", height + margin.top + margin.bottom)
- .append("g")
- .attr("transform", "translate(" +
- margin.left + "," + margin.top + ")");
+            // On exit reduce the opacity of text labels
+            nodeExit.select('text')
+            .style('fill-opacity', 1e-6);
 
-var i = 0,
- duration = 750,
- root;
+            // ****************** links section ***************************
 
-// declares a tree layout and assigns the size
-var treemap = d3.tree().size([height, width]);
+            // Update the links...
+            var link = svg.selectAll('path.link')
+            .data(links, function(d) { return d.id; });
 
-// Assigns parent, children, height, depth
-root = d3.hierarchy(treeData, function(d) { return (d.children) ? d.children : d; });
-root.x0 = height / 2;
-root.y0 = 0;
+            // Enter any new links at the parent's previous position.
+            var linkEnter = link.enter().insert('path', "g")
+            .attr("class", "link")
+            .attr('d', function(d) {
+            var o = { x: source.x0, y: source.y0 }
+            return diagonal(o, o)
+            });
 
-// Collapse after the second level
-//root.children.forEach(collapse);
+            // UPDATE
+            var linkUpdate = linkEnter.merge(link);
 
-update(root);
+            // Transition back to the parent element position
+            linkUpdate.transition()
+            .duration(duration)
+            .attr('d', function(d) { return diagonal(d, d.parent) });
 
-// Collapse the node and all it's children
-function collapse(d) {
- if (d.children) {
- d._children = d.children
- d._children.forEach(collapse)
- d.children = null
- }
-}
+            // Remove any exiting links
+            var linkExit = link.exit().transition()
+            .duration(duration)
+            .attr('d', function(d) {
+                var o = { x: source.x, y: source.y }
+                return diagonal(o, o)
+            })
+            .remove();
 
-function update(source) {
+            // Store the old positions for transition.
+            nodes.forEach(function(d) {
+                d.x0 = d.x;
+                d.y0 = d.y;
+                });
 
- // Assigns the x and y position for the nodes
- var treeData = treemap(root);
+                // Creates a curved (diagonal) path from parent to the child nodes
+                function diagonal(s, d) {
 
- // Compute the new tree layout.
- var nodes = treeData.descendants(),
- links = treeData.descendants().slice(1);
+                var path = `M ${s.y} ${s.x}
+                C ${(s.y + d.y) / 2} ${s.x},
+                ${(s.y + d.y) / 2} ${d.x},
+                ${d.y} ${d.x}`
 
- // Normalize for fixed-depth.
- nodes.forEach(function(d) { d.y = d.depth * 180 });
+                return path
+            }
 
- // ****************** Nodes section ***************************
+            // Toggle children on click.
+            function doubleclickHandler(d) {
+            if (d.children) {
+            d._children = d.children;
+            d.children = null;
+            } else {
+            d.children = d._children;
+            d._children = null;
+            }
+            update(d);
+            }
 
- // Update the nodes...
- var node = svg.selectAll('g.node')
- .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
- // Enter any new modes at the parent's previous position.
- var nodeEnter = node.enter().append('g')
- .attr('class', 'node')
- .attr("transform", function(d) {
- return "translate(" + source.y0 + "," + source.x0 + ")";
- })
- .on('click', click);
-
- // Add Circle for the nodes
- nodeEnter.append('circle')
- .attr('class', 'node')
- .attr('r', 1e-6)
- .style("fill", function(d) {
- return d._children ? "lightsteelblue" : "#fff";
- });
-
- // Add labels for the nodes
- nodeEnter.append('text')
- .attr("dy", ".35em")
- .attr("x", function(d) {
- return d.children || d._children ? -13 : 13;
- })
- .attr("text-anchor", function(d) {
- return d.children || d._children ? "end" : "start";
- })
- .text(function(d) { return (d.data.hash) ? d.data.hash.substring(0, 10) : "NO commit hash"; });
-
- // UPDATE
- var nodeUpdate = nodeEnter.merge(node);
-
- // Transition to the proper position for the node
- nodeUpdate.transition()
- .duration(duration)
- .attr("transform", function(d) {
- return "translate(" + d.y + "," + d.x + ")";
- });
-
- // Update the node attributes and style
- nodeUpdate.select('circle.node')
- .attr('r', 10)
- .style("fill", function(d) {
- return d._children ? "lightsteelblue" : "#fff";
- })
- .attr('cursor', 'pointer');
-
-
- // Remove any exiting nodes
- var nodeExit = node.exit().transition()
- .duration(duration)
- .attr("transform", function(d) {
- return "translate(" + source.y + "," + source.x + ")";
- })
- .remove();
-
- // On exit reduce the node circles size to 0
- nodeExit.select('circle')
- .attr('r', 1e-6);
-
- // On exit reduce the opacity of text labels
- nodeExit.select('text')
- .style('fill-opacity', 1e-6);
-
- // ****************** links section ***************************
-
- // Update the links...
- var link = svg.selectAll('path.link')
- .data(links, function(d) { return d.id; });
-
- // Enter any new links at the parent's previous position.
- var linkEnter = link.enter().insert('path', "g")
- .attr("class", "link")
- .attr('d', function(d) {
- var o = { x: source.x0, y: source.y0 }
- return diagonal(o, o)
- });
-
- // UPDATE
- var linkUpdate = linkEnter.merge(link);
-
- // Transition back to the parent element position
- linkUpdate.transition()
- .duration(duration)
- .attr('d', function(d) { return diagonal(d, d.parent) });
-
- // Remove any exiting links
- var linkExit = link.exit().transition()
- .duration(duration)
- .attr('d', function(d) {
- var o = { x: source.x, y: source.y }
- return diagonal(o, o)
- })
- .remove();
-
- // Store the old positions for transition.
- nodes.forEach(function(d) {
- d.x0 = d.x;
- d.y0 = d.y;
- });
-
- // Creates a curved (diagonal) path from parent to the child nodes
- function diagonal(s, d) {
-
- var path = `M ${s.y} ${s.x}
- C ${(s.y + d.y) / 2} ${s.x},
- ${(s.y + d.y) / 2} ${d.x},
- ${d.y} ${d.x}`
-
- return path
- }
-
- // Toggle children on click.
- function click(d) {
- if (d.children) {
- d._children = d.children;
- d.children = null;
- } else {
- d.children = d._children;
- d._children = null;
- }
- update(d);
- }
-}
+            function clikcHandler(d){
+                var state = self.state;
+                state.currentCommit = d.data;
+                self.setState(state);
+                update(d);
+            }
+        }
     }
     
     unflattern(array, parent, tree) {
@@ -225,15 +245,31 @@ function update(source) {
         return (
             <div>
                 <h1> History {this.state.file.name} </h1>
-                <ul>
-                    {
-                        this.state.file.cids.map((element)=> {
-                            return <li> {element.commitMessage} {moment(element.createdAt).format('YYYY-MM-DD HH:mm Z')} </li>
-                        })
-                    }
-                </ul>
                 <div id="chartHistory">
                     <svg></svg>
+                </div>
+                <div className={`${this.state.currentCommit !== "" ? 'show' : 'hide'}`}>
+                    <div className="form-group row">
+                        <label> hash </label> {this.state.currentCommit.hash}
+                    </div>
+                    <div className="form-group row">
+                        <label> parent </label> {this.state.currentCommit.parent}
+                    </div>
+                    <div className="form-group row">
+                        <label> checksum </label> {this.state.currentCommit.checksum}
+                    </div>
+                     <div className="form-group row">
+                        <label> date </label> {moment(this.state.currentCommit.createdAt).format('YYYY/MM/DD H:mm:ss')}
+                    </div>
+                    <div className="form-group row">
+                        <label for="message" className="col-2 col-form-label"> meassge </label>
+                        <div className="col-5">
+                            <input id="message" className="form-control" type="text" value={this.state.currentCommit.commitMessage}/>
+                        </div>
+                    </div>
+                     <div className="form-group row">
+                        <a href="#" className="btn btn-success">Save</a>
+                    </div>
                 </div>
             </div>
         );
