@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import TelescopTopics from '../services/api/event/EventTelescop/topics';
+
 const moment = require('moment');
 const d3 = require('d3');
 const _ = require('lodash');
+const {ipcRenderer} = require('electron');
 
 export default class HistoryPage extends Component{
     
@@ -16,13 +19,24 @@ export default class HistoryPage extends Component{
                     zoomMax : -1 *  (this.props.application.state.file.cids.length * 150)
                 };
         this.state = state;
-        
+        this.saveHandler = this.saveClickHandler.bind(this);
+        this.changeHandler = this.commitMessageChange.bind(this);
     }
 
     componentDidMount() {
         this.drawGraphic();
     }
 
+    commitMessageChange(event){
+       var state = this.state;
+       state.currentCommit.commitMessage = event.target.value;
+       this.setState(state);
+    }
+
+    saveClickHandler(event){
+        var state = this.state;
+        ipcRenderer.send(TelescopTopics.UPDATE_COMMIT, JSON.stringify({file: state.file.path, commit: state.currentCommit.hash , commitMessage : state.currentCommit.commitMessage}))
+    }
 
     drawGraphic() {
             var self = this;
@@ -113,7 +127,7 @@ export default class HistoryPage extends Component{
             .attr("text-anchor", function(d) {
             return d.children || d._children ? "end" : "start";
             })
-            .text(function(d) { return (d.data.hash) ? d.data.hash.substring(0, 10) : ""; });
+            .text(function(d) { return (d.data.commitMessage) ? d.data.commitMessage.substring(0, 10) : ""; });
 
             // UPDATE
             var nodeUpdate = nodeEnter.merge(node);
@@ -130,9 +144,9 @@ export default class HistoryPage extends Component{
             .attr('r', 10)
             .style("fill", function(d) {
                 if(self.state.currentCommit.hash === d.data.hash)
-                    return d._children ? "lightsteelblue" : "#0f0";
+                    return  "#0f0";
                 else
-                  return d._children ? "lightsteelblue" : "#fff";  
+                  return  "#fff";  
             })
             .attr('cursor', 'pointer');
 
@@ -264,11 +278,11 @@ export default class HistoryPage extends Component{
                     <div className="form-group row">
                         <label for="message" className="col-2 col-form-label"> meassge </label>
                         <div className="col-5">
-                            <input id="message" className="form-control" type="text" value={this.state.currentCommit.commitMessage}/>
+                            <input id="message" className="form-control" type="text" value={this.state.currentCommit.commitMessage} onChange={this.changeHandler}/>
                         </div>
                     </div>
                      <div className="form-group row">
-                        <a href="#" className="btn btn-success">Save</a>
+                        <a href="#" className="btn btn-success" onClick={this.saveHandler}>Save</a> <a href="#" className="btn btn-primary">Revert</a> 
                     </div>
                 </div>
             </div>
