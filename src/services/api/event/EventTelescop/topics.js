@@ -1,4 +1,6 @@
 export default {
     "GET_FILES" : "telescop/file/all",
-    "SHARE_IPFS" : "telescop/ipfs/share"
+    "REVERT_FILE" : "telescop/file/revert",
+    "SHARE_IPFS" : "telescop/ipfs/share",
+    "UPDATE_COMMIT" : "telescop/tracks/commit/update"
 }
