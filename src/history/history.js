@@ -21,6 +21,7 @@ export default class HistoryPage extends Component{
         this.state = state;
         this.saveHandler = this.saveClickHandler.bind(this);
         this.changeHandler = this.commitMessageChange.bind(this);
+        this.revertHandler = this.revertClickHandler.bind(this);
     }
 
     componentDidMount() {
@@ -36,6 +37,12 @@ export default class HistoryPage extends Component{
     saveClickHandler(event){
         var state = this.state;
         ipcRenderer.send(TelescopTopics.UPDATE_COMMIT, JSON.stringify({file: state.file.path, commit: state.currentCommit.hash , commitMessage : state.currentCommit.commitMessage}))
+    }
+
+    revertClickHandler(){
+        var state = this.state;
+        console.log("revert");
+        ipcRenderer.send(TelescopTopics.REVERT_FILE, JSON.stringify({file:state.file.path, commit:state.currentCommit.hash}));
     }
 
     drawGraphic() {
@@ -282,7 +289,7 @@ export default class HistoryPage extends Component{
                         </div>
                     </div>
                      <div className="form-group row">
-                        <a href="#" className="btn btn-success" onClick={this.saveHandler}>Save</a> <a href="#" className="btn btn-primary">Revert</a> 
+                        <a href="#" className="btn btn-success" onClick={this.saveHandler}>Save</a> <a href="#" className="btn btn-primary" onClick={this.revertHandler}>Revert</a> 
                     </div>
                 </div>
             </div>

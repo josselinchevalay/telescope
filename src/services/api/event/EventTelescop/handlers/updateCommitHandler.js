@@ -24,5 +24,5 @@ export default function(event, data){
         }
     }
     tracksDao.update(dbObject);
-     event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({message:"Commit " + data.commit.substring(0, 10) + " commit message updated !" , level:"success", autoDismiss:2}));
+    event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({message:"Commit " + data.commit.substring(0, 10) + " commit message updated !" , level:"success", autoDismiss:2}));
 }

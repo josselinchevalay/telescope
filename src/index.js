@@ -50,7 +50,7 @@ app.on('ready', () => {
   logger.debug('electon is ready wait run ipfs daemon ....')
   instance.start().then((api) => {
         var eventIpfs = new IpfsEventService(ipcMain, api);
-        var eventTelescopConfig = new TelescopConfigEventService(ipcMain);
+        var eventTelescopConfig = new TelescopConfigEventService(ipcMain,api);
         var eventTelescop = new TelecopEventService(ipcMain,api);
         logger.debug('ipfs daemon is started display  main windows');
         createWindow();

@@ -15,6 +15,14 @@ var fsAPI = function() {
             return false;
     };
 
+    this.getFilename = (filePath) =>{
+        if(this.isPath(filePath)){
+            return path.basename(filePath);
+        }else{
+            return false;
+        }
+    }
+
     this.isPath = (filePath) => {
         if (filePath === '' ||
             filePath === null ||
