@@ -3,6 +3,7 @@ import Folder from '../folder/folder';
 import About from '../about/about';
 import Config from '../config/index';
 import History from '../history/history';
+import Tracker from '../tracker/tracker';
 import React, { Component } from 'react';
 
 
@@ -19,6 +20,8 @@ export default class AppBody extends Component{
                 return <Config />
             case "History":
                 return <History application={this.props.application} />
+            case "Tracker" :
+                return <Tracker application={this.props.application} />
             case "Files":
             default:
                 return <Home application={this.props.application}/>;
