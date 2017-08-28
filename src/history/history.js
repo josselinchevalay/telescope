@@ -6,6 +6,10 @@ const d3 = require('d3');
 const _ = require('lodash');
 const {ipcRenderer} = require('electron');
 
+const styleActionBtn = {
+    "margin-left" : "15px"
+};
+
 export default class HistoryPage extends Component{
     
     constructor(props){
@@ -22,6 +26,7 @@ export default class HistoryPage extends Component{
         this.saveHandler = this.saveClickHandler.bind(this);
         this.changeHandler = this.commitMessageChange.bind(this);
         this.revertHandler = this.revertClickHandler.bind(this);
+        this.shareHandler = this.shareClickHandler.bind(this);
     }
 
     componentDidMount() {
@@ -32,6 +37,11 @@ export default class HistoryPage extends Component{
        var state = this.state;
        state.currentCommit.commitMessage = event.target.value;
        this.setState(state);
+    }
+
+    shareClickHandler(event){
+        var state = this.state;
+        ipcRenderer.send(TelescopTopics.SHARE_IPFS , this.state.currentCommit.hash);
     }
 
     saveClickHandler(event){
@@ -289,7 +299,9 @@ export default class HistoryPage extends Component{
                         </div>
                     </div>
                      <div className="form-group row">
-                        <a href="#" className="btn btn-success" onClick={this.saveHandler}>Save</a> <a href="#" className="btn btn-primary" onClick={this.revertHandler}>Revert</a> 
+                        <a href="#" className="btn btn-success" onClick={this.saveHandler} style={styleActionBtn}>Save</a> 
+                        <a href="#" className="btn btn-primary" onClick={this.revertHandler} style={styleActionBtn}>Revert</a> 
+                        <a href="#" className="btn btn-primary" onClick={this.shareHandler} style={styleActionBtn}>Share</a> 
                     </div>
                 </div>
             </div>
