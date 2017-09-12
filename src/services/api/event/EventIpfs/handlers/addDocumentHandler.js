@@ -1,13 +1,13 @@
 import LoggerService from '../../../../logger'
 import FileSystemApi from '../../../fileSystemApi';
-import PersistenceFactory  from '../../../../persistence/persistenceFactory';
+import PersistenceFactory from '../../../../persistence/persistenceFactory';
 import NotificationTopics from '../../EventNotification/topics';
 
 const logger = new LoggerService();
 logger.level = "debug";
 
 
-function createTrack(file, ipfsInformation, commitMessage){
+function createTrack(file, ipfsInformation, commitMessage) {
     var timestamp = Date.now();
     var entity = {};
     var ressource = {};
@@ -26,7 +26,7 @@ function createTrack(file, ipfsInformation, commitMessage){
     return entity;
 }
 
-function updateTrack(file, track, ipfsInformation, commitMessage){
+function updateTrack(file, track, ipfsInformation, commitMessage) {
     var timestamp = Date.now();
     var ressource = {};
     ressource.parent = track.latestCid.hash;
@@ -42,83 +42,83 @@ function updateTrack(file, track, ipfsInformation, commitMessage){
     return track;
 }
 
-function bindFileInfo(ressources, file){
+function bindFileInfo(ressources, file) {
     var fileOsInfo = FileSystemApi.getStat(file.path);
-    fileOsInfo.type =  FileSystemApi.getMimeType(file.path);
+    fileOsInfo.type = FileSystemApi.getMimeType(file.path);
     file.checksum = FileSystemApi.checksum(file.path);
-    if(!file.lastlastModified){
+    if (!file.lastlastModified) {
         file.lastlastModified = new Date(fileOsInfo.mtime).getTime()
     }
-    if(!file.size){
+    if (!file.size) {
         file.size = fileOsInfo.size;
     }
-    if(!file.type){
+    if (!file.type) {
         file.type = fileOsInfo.type || "os/directory";
     }
-    if(FileSystemApi.isDirectory(file.path)){
-        FileSystemApi.readDir(file.path).forEach((c)=>{
-            var child = {path : file.path + "/" + c, name: c};
+    if (FileSystemApi.isDirectory(file.path)) {
+        FileSystemApi.readDir(file.path).forEach((c) => {
+            var child = { path: file.path + "/" + c, name: c };
             bindFileInfo(ressources, child);
         });
-    }else{
+    } else {
         file.content = FileSystemApi.getBuffer(file.path);
     }
     ressources.push(file);
 }
 
-function addOnIpfs(event, ressources, ipfsApi){
+function addOnIpfs(event, ressources, ipfsApi) {
     var provider = PersistenceFactory.getPorvider(PersistenceFactory.LOWDB);
-    var connection  = provider.createConnection(provider.DBPATH);
+    var connection = provider.createConnection(provider.DBPATH);
     var tracksDao = provider.gettracksDao(connection);
-    var files = ressources.filter((element)=>{
+    var files = ressources.filter((element) => {
         return element.type !== "os/directory";
     });
-    ipfsApi.apiClient.files.add(files, (error, response) =>{
-        ressources.forEach((ressource)=>{
-            if(error){
+    ipfsApi.files.add(files, (error, response) => {
+        ressources.forEach((ressource) => {
+            if (error) {
                 var message = "ipfs/document/add ressource" + ressource.path + "doesn't add to ipfs error code : " + error.code;
                 logger.error(message, JSON.stringify(error));
-                event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({message:message, level:"error", autoDismiss:2}));
+                event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({ message: message, level: "error", autoDismiss: 2 }));
                 return;
             }
-            if(ressource.content){
+            if (ressource.content) {
                 delete ressource.content;
             }
             logger.debug("ipfs/document/add ressource = ", JSON.stringify(ressource));
-            var ipfsInformation = response.filter((element) => { 
-                if(ressource.type === "os/directory"){
+            var ipfsInformation = response.filter((element) => {
+                if (ressource.type === "os/directory") {
                     return "/" + element.path === ressource.path;
-                }else{
-                    return element.path === ressource.path ;
+                } else {
+                    return element.path === ressource.path;
                 }
             })[0]; /// first element where path is the same
             var track = tracksDao.findByPath(ressource.path);
-            if(track){
-                 logger.debug("ipfs/document/add ressource", ressource.path, " exist");
+            if (track) {
+                logger.debug("ipfs/document/add ressource", ressource.path, " exist");
                 var cids = track.cids.filter((element) => {
-                                        return element.hash === ipfsInformation.hash;
-                                    });
-                 if(cids.length >0){
-                      logger.debug("ipfs/document/add ressource", ressource.path, " already tracked");
-                     event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({message:"Ressource : "+ ressource.path +" already exist on ipfs !" , level:"warning", autoDismiss:2}));
-                 }else{
-                    var entity = updateTrack(ressource, track,ipfsInformation, ipfsInformation.hash);
+                    return element.hash === ipfsInformation.hash;
+                });
+                if (cids.length > 0) {
+                    logger.debug("ipfs/document/add ressource", ressource.path, " already tracked");
+                    event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({ message: "Ressource : " + ressource.path + " already exist on ipfs !", level: "warning", autoDismiss: 2 }));
+                } else {
+                    var entity = updateTrack(ressource, track, ipfsInformation, ipfsInformation.hash);
                     tracksDao.update(entity);
                     logger.debug("ipfs/document/add ressource", ressource.path, " updated");
-                    event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({message:"Ressource : "+ ressource.path +" synchronized on ipfs !" , level:"success", autoDismiss:2}));
-                 }
+                    event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({ message: "Ressource : " + ressource.path + " synchronized on ipfs !", level: "success", autoDismiss: 2 }));
+                }
 
-            }else{
+            } else {
                 logger.debug("ipfs/document/add ressource", ressource.path, " not exist");
                 var entity = createTrack(ressource, ipfsInformation, "First commit");
                 tracksDao.create(entity);
-                event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({message:"Document : "+ ressource.path +" added on ipfs !" , level:"success", autoDismiss:2}));
+                event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({ message: "Document : " + ressource.path + " added on ipfs !", level: "success", autoDismiss: 2 }));
             }
         });
     });
 }
 
-export default function(event, data){
+export default function (event, data) {
     "use strict";
     logger.debug("ipfs/document/add data = ", data);
     var files = JSON.parse(data);
@@ -127,7 +127,7 @@ export default function(event, data){
         var file = JSON.parse(f);
         bindFileInfo(ressources, file);
         logger.debug("ipfs/document/add number of ressources %d", ressources.length);
-        addOnIpfs(event,ressources,this.ipfsApi);
+        addOnIpfs(event, ressources, this.ipfsApi);
     });
     event.returnValue = 'pong';
 };

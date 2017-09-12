@@ -2,6 +2,10 @@
 
 GUI tools to manage IPFS daemon.
 
+# requirement
+
+go-ipfs v 0.4.10 `https://dist.ipfs.io/#go-ipfs`
+
 # Features
 * add file / directory in ipfs by drag n drop
 * copy on clipboard ipfs link

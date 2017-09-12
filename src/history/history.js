@@ -7,7 +7,7 @@ const _ = require('lodash');
 const {ipcRenderer} = require('electron');
 
 const styleActionBtn = {
-    "margin-left" : "15px"
+    marginLeft : "15px"
 };
 
 export default class HistoryPage extends Component{
@@ -20,13 +20,15 @@ export default class HistoryPage extends Component{
                     zoomY : 0,
                     zoomK : 1,
                     zoomSpeed : 50,
-                    zoomMax : -1 *  (this.props.application.state.file.cids.length * 150)
+                    zoomMax : -1 *  (this.props.application.state.file.cids.length * 150),
+                    application: props.application
                 };
         this.state = state;
         this.saveHandler = this.saveClickHandler.bind(this);
         this.changeHandler = this.commitMessageChange.bind(this);
         this.revertHandler = this.revertClickHandler.bind(this);
         this.shareHandler = this.shareClickHandler.bind(this);
+        this.trackCommitHandler = this.trackCommitClick.bind(this);
     }
 
     componentDidMount() {
@@ -37,6 +39,10 @@ export default class HistoryPage extends Component{
        var state = this.state;
        state.currentCommit.commitMessage = event.target.value;
        this.setState(state);
+    }
+
+    trackCommitClick(event){
+        this.state.application.setState({context:"Tracker" , file : this.state.file, parent: this.state.currentCommit.hash});
     }
 
     shareClickHandler(event){
@@ -275,7 +281,10 @@ export default class HistoryPage extends Component{
     render(){
         return (
             <div>
-                <h1> History {this.state.file.name} </h1>
+                <h1> 
+                    History {this.state.file.name}
+                    <span className="glyphicon glyphicon-plus pull-right" onClick={this.trackCommitHandler}></span>
+                </h1>
                 <div id="chartHistory">
                     <svg></svg>
                 </div>
@@ -294,8 +303,8 @@ export default class HistoryPage extends Component{
                     </div>
                     <div className="form-group row">
                         <label for="message" className="col-2 col-form-label"> meassge </label>
-                        <div className="col-5">
-                            <input id="message" className="form-control" type="text" value={this.state.currentCommit.commitMessage} onChange={this.changeHandler}/>
+                        <div className="">
+                            <input id="message" size="200" className="form-control" type="text" value={this.state.currentCommit.commitMessage} onChange={this.changeHandler}/>
                         </div>
                     </div>
                      <div className="form-group row">
