@@ -7,16 +7,17 @@ const logger = new LoggerService();
 logger.level = "debug";
 export default class IpfsEventService {
 
-    constructor(ipc, ipfsApi){
+    constructor(ipc, ipfsApi) {
+        console.log(ipfsApi);
         this.eventService = new EventService(ipc);
         this.ipfsApi = ipfsApi;
 
         this.handlers = {
-            "ipfs/document/add" : AddDocumentHandler.bind(this),
-            "ipfs/config/get" : (event, data) => {
+            "ipfs/document/add": AddDocumentHandler.bind(this),
+            "ipfs/config/get": (event, data) => {
                 logger.debug("ipfs/config/get");
                 this.ipfsApi.apiClient.config.get((err, config) => {
-                    var config  =JSON.parse(config);
+                    var config = JSON.parse(config);
                     event.returnValue = JSON.stringify(config);
                 })
             }
@@ -24,10 +25,10 @@ export default class IpfsEventService {
         this.initialize();
     };
 
-    initialize(){
-       for(var topic in this.handlers){
-           this.eventService.addTopic(topic, this.handlers[topic]);
-       }
+    initialize() {
+        for (var topic in this.handlers) {
+            this.eventService.addTopic(topic, this.handlers[topic]);
+        }
     };
 
 }
