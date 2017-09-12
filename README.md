@@ -17,3 +17,9 @@ go-ipfs v 0.4.10 `https://dist.ipfs.io/#go-ipfs`
 
 # futur
 * config your daemon by GUI
+
+# Install (developpement only)
+```
+npm install --dev 
+./node_modules/.bin/electron-forge start
+```
