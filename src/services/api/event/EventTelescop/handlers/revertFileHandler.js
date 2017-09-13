@@ -11,7 +11,7 @@ logger.level = "debug";
 
 
 function getRessourceByhash(ipfsApi, path, hash){
-     ipfsApi.apiClient.files.get(hash).then((stream) => {
+     ipfsApi.files.get(hash).then((stream) => {
             stream.on('data', (file) => {
                 var tempPath = path;
                 // write the file's path and contents to standard out
