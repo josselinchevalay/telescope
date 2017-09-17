@@ -2,35 +2,35 @@
 
 GUI tools to manage IPFS daemon.
 
-# requirement
+# Requirement
 
 go-ipfs v 0.4.10 `https://dist.ipfs.io/#go-ipfs`
 
 # Features
-* add file / directory in ipfs by drag n drop
-* copy on clipboard ipfs link
-* manage history your file or directory
+* add file / directory in ipfs by drag-n-drop
+* copy IPFS link to clipboard
+* manage history of your file or directory
 
 
-# In developpment
-* add manually a hash in your history
+# In development
+* manually add a hash in your history
 
-# futur
-* config your daemon by GUI
+# Future
+* configure your daemon by GUI
 
-# Install (developpement only)
+# Install (development only)
 ```
 npm install --dev 
 ./node_modules/.bin/electron-forge start
 ```
 
-# Add ressource in IPFS by Telescop
+# Add resource in IPFS by Telescope
 ![Alt Text](https://media.giphy.com/media/3o7aD4GugsHoa7plYY/giphy.gif)
 
-# Share ressource 
+# Share resource 
 ![Alt Text](https://media.giphy.com/media/3ohhwxwXgZs3Nv9mdW/giphy.gif)
 
-# Update ressource 
+# Update resource 
 ![Alt Text](https://media.giphy.com/media/l1J9AK7TMq3mh46Fa/giphy.gif)
 
 # History 
@@ -39,5 +39,5 @@ npm install --dev
 # Share old cid version 
 ![Alt Text](https://media.giphy.com/media/l1J9wVfgMtqtgqZmE/giphy.gif)
 
-# Revert locally version
+# Revert local version
 ![Alt Text](https://media.giphy.com/media/l1J9Mwhe4fJzRgFG0/giphy.gif)
