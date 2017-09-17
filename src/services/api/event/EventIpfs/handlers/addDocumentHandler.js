@@ -5,7 +5,7 @@ import NotificationTopics from '../../EventNotification/topics';
 
 const logger = new LoggerService();
 logger.level = "debug";
-
+const IpcMain = require("electron").ipcMain;
 
 function createTrack(file, ipfsInformation, commitMessage) {
     var timestamp = Date.now();
@@ -107,6 +107,7 @@ function addOnIpfs(event, ressources, ipfsApi) {
                     tracksDao.update(entity);
                     logger.debug("ipfs/document/add ressource", ressource.path, " updated");
                     event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({ message: "Ressource : " + ressource.path + " synchronized on ipfs !", level: "success", autoDismiss: 2 }));
+                    event.sender.send(NotificationTopics.REFRESH_FILES, JSON.stringify({ "refresh": "files" }));
                 }
 
             } else {
@@ -114,6 +115,7 @@ function addOnIpfs(event, ressources, ipfsApi) {
                 var entity = createTrack(ressource, ipfsInformation, "First commit");
                 tracksDao.create(entity);
                 event.sender.send(NotificationTopics.NOTIFICATION, JSON.stringify({ message: "Document : " + ressource.path + " added on ipfs !", level: "success", autoDismiss: 2 }));
+                event.sender.send(NotificationTopics.REFRESH_FILES, JSON.stringify({ "refresh": "files" }));
             }
         });
     });
