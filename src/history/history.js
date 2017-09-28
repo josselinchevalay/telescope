@@ -99,7 +99,7 @@ export default class HistoryPage extends Component {
         var treemap = d3.tree().size([height, width]);
 
         // Assigns parent, children, height, depth
-        root = d3.hierarchy(treeData, function (d) { return (d.children) ? d.children : d; });
+        root = d3.hierarchy(treeData[0], function (d) { return (d.children) ? d.children : d; });
         root.x0 = height / 2;
         root.y0 = 0;
 
