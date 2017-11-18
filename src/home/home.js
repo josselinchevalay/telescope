@@ -28,6 +28,7 @@ export default class FolderPage extends Component {
 
     refreshFile(event, arg) {
         this.getFiles();
+        this.render();
     }
 
     increment(event) {

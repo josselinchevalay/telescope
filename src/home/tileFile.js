@@ -50,7 +50,7 @@ export default class TileFile extends Component {
     }
 
     share(event) {
-        ipcRenderer.send(TelescopTopics.SHARE_IPFS, this.state.file.latestCid.hash);
+        ipcRenderer.send(TelescopTopics.SHARE_IPFS, this.state.file.path);
     }
 
     history(event) {

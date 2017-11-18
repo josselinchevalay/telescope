@@ -49,6 +49,10 @@ ipfsd.local((err, node) => {
   app.on('ready', () => {
     logger.debug('electon is ready wait run ipfs daemon ....')
     node.startDaemon((err, api) => {
+      if(err){
+        console.error(err);
+        return false;
+      }
       var eventIpfs = new IpfsEventService(ipcMain, api);
       var eventTelescopConfig = new TelescopConfigEventService(ipcMain, api);
       var eventTelescop = new TelecopEventService(ipcMain, api);
