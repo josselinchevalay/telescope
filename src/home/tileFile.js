@@ -24,6 +24,12 @@ export default class TileFile extends Component {
         this.shareHandler = this.share.bind(this);
         this.historyHandler = this.history.bind(this);
         this.synchronizeHandler = this.synchronize.bind(this);
+        this.metaHandler = this.metaEvent.bind(this);
+    }
+
+    metaEvent(event){
+        var applicationState = this.state.parent.props.application.state;
+        this.state.parent.props.application.setState({ context: "Metadata", file: this.state.file });
     }
 
     clickEvent(event) {
@@ -84,6 +90,7 @@ export default class TileFile extends Component {
                         <span className="glyphicon glyphicon-download" style={styleActionIcon}>Download</span>
                         <span className="glyphicon glyphicon-refresh" style={styleActionIcon} onClick={this.synchronizeHandler}>Synchronize</span>
                         <span className="glyphicon glyphicon-book" style={styleActionIcon} onClick={this.historyHandler}>History</span>
+                        <span className="glyphicon glyphicon-book" style={styleActionIcon} onClick={this.metaHandler}>Metadata</span>
                     </div>
                 </div>
             </div>

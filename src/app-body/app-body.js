@@ -4,6 +4,7 @@ import About from '../about/about';
 import Config from '../config/index';
 import History from '../history/history';
 import Tracker from '../tracker/tracker';
+import Meta    from '../metadata/';
 import React, { Component } from 'react';
 
 
@@ -16,6 +17,8 @@ export default class AppBody extends Component{
                 return <Folder application={this.props.application}/>
             case "About":
                 return <About />
+            case "Metadata":
+                 return <Meta application={this.props.application} />
             case "Config" : 
                 return <Config />
             case "History":

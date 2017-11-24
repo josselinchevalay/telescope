@@ -4,6 +4,7 @@ import getAllFilesHandler from './handlers/getAllFilesHandler';
 import shareHashHandler from './handlers/shareHashHandler';
 import UpdateCommitHandler from './handlers/updateCommitHandler';
 import RevertFileHandler from './handlers/revertFileHandler';
+import ListMetadataHandler from './handlers/listMetadataHandler';
 
 const logger = new LoggerService();
 logger.level = "debug";
@@ -18,7 +19,8 @@ export default class IpfsEventService {
             "telescop/file/all" : getAllFilesHandler.bind(this),
             "telescop/ipfs/share" : shareHashHandler.bind(this),
             "telescop/tracks/commit/update" : UpdateCommitHandler.bind(this),
-            "telescop/file/revert" : RevertFileHandler.bind(this)
+            "telescop/file/revert" : RevertFileHandler.bind(this),
+            "telescop/metadata/list" : ListMetadataHandler.bind(this),
         }
         this.initialize();
     };
