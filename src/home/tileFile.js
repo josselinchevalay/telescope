@@ -90,7 +90,7 @@ export default class TileFile extends Component {
                         <span className="glyphicon glyphicon-download" style={styleActionIcon}>Download</span>
                         <span className="glyphicon glyphicon-refresh" style={styleActionIcon} onClick={this.synchronizeHandler}>Synchronize</span>
                         <span className="glyphicon glyphicon-book" style={styleActionIcon} onClick={this.historyHandler}>History</span>
-                        <span className="glyphicon glyphicon-book" style={styleActionIcon} onClick={this.metaHandler}>Metadata</span>
+                        <span className="glyphicon glyphicon-tag" style={styleActionIcon} onClick={this.metaHandler}>Metadata</span>
                     </div>
                 </div>
             </div>

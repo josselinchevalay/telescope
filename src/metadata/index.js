@@ -19,14 +19,31 @@ export default class AppBody extends Component{
 
 	getMetadata(){
 		var state = this.state;
-		state.metadata = JSON.parse(ipcRenderer.sendSync(TelescopTopics.LIST_METADATA, state.file.path));
-		console.log(state.metadata);
+		state.metadata = {test:'hello'}//JSON.parse(ipcRenderer.sendSync(TelescopTopics.LIST_METADATA, state.file.path));
 		this.setState(state);
 	}
 
     render(){
     	return (
-    		<h1>Metadata</h1>
+    		<div>
+    			<h1>Metadata > {this.state.file.path}</h1>
+    			<table className="table table-striped">
+    			   <thead>
+    			      <tr>
+    			         <th>Name</th>
+    			         <th>Value</th>
+    			      </tr>
+    			   </thead>
+    			   <tbody>
+	    			   {
+	    			   	   Object.keys(this.state.metadata).map((metaName) => {
+	    			   	   	   return <tr><th scope="row">{metaName}</th><td>{this.state.metadata[metaName]}</td></tr>;
+	    			   	   })
+	    			   }
+	    			</tbody>
+    			</table>
+    		</div>
+
     	);
     }
 }
