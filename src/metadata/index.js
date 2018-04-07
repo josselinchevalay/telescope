@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import TelescopTopics from '../services/api/event/EventTelescop/topics';
 import NotificationTopics from '../services/api/event/EventNotification/topics';
 
@@ -19,22 +20,39 @@ export default class AppBody extends Component{
 		this.changeHandler = this.change.bind(this);
 	}
 
+	changeBtn(idRow, name, oldClass, newClass, handler){
+		let btnActionDOM = document.querySelector(`#${idRow} td a.action`);
+		btnActionDOM.classList.remove(oldClass);
+		btnActionDOM.classList.add(newClass);
+		btnActionDOM.innerHTML = name;
+		btnActionDOM.onclick = handler;
+	}
+
 	change(event){
-		console.log(event.target);
+		let idRow = event.target.dataset['row'];
+		let valueDOM = document.querySelector(`#${idRow} input`);
+		let newValue = valueDOM.value;
+		let state = this.state;
+		state.metadata[idRow] = newValue;
+		this.changeBtn(idRow, "Delete", "btn-warning", "btn-danger", this.changeHandler);
+		valueDOM.innerHTML = `<b>${newValue}</b>`;
 	}
 
 	getHTMLInputTemplate(namedNodeHTML){
-		return "<input type='text' value='"+namedNodeHTML.dataset.value+"' onChange={this.changeHandler} />";
+		return `<input type="text" value="${namedNodeHTML.dataset.value}" onChange="{${this.changeHandler}}" />`;
 	}
 
 	edit(event){
 		let namedNodeHTML = event.target;
+		let idRow = event.target.dataset['row'];
+		let btnActionDOM = document.querySelector(`#${idRow} td a.action`);
+		this.changeBtn(idRow, "Update", "btn-danger", "btn-warning", this.changeHandler);
 		event.target.innerHTML = this.getHTMLInputTemplate(namedNodeHTML);
 	}
 
 	getMetadata(){
 		var state = this.state;
-		state.metadata = {test:'hello'}//JSON.parse(ipcRenderer.sendSync(TelescopTopics.LIST_METADATA, state.file.path));
+		state.metadata = {test:'hello', date:"blah blah"}//JSON.parse(ipcRenderer.sendSync(TelescopTopics.LIST_METADATA, state.file.path));
 		this.setState(state);
 	}
 
@@ -53,7 +71,7 @@ export default class AppBody extends Component{
     			   <tbody>
 	    			   {
 	    			   	   Object.keys(this.state.metadata).map((metaName) => {
-	    			   	   	   return <tr id={metaName}><th scope="row">{metaName}</th><td data-row={metaName} data-value={this.state.metadata[metaName]} className="value" onClick={this.editHandler} >{this.state.metadata[metaName]}</td><td><a href="#" className="btn btn-danger">Delete</a></td></tr>;
+	    			   	   	   return <tr id={metaName}><th scope="row">{metaName}</th><td data-row={metaName} data-value={this.state.metadata[metaName]} className="value" onClick={this.editHandler} >{this.state.metadata[metaName]}</td><td><a href="#" className="btn btn-danger action" data-row={metaName}>Delete</a></td></tr>;
 	    			   	   })
 	    			   }
 	    			   <tr className="form-group">
