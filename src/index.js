@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
-import ipfsd from 'ipfsd-ctl'
+import IPFS from 'ipfs';
 import IpfsEventService from './services/api/event/EventIpfs';
 import TelescopConfigEventService from './services/api/event/EventConfig';
 import TelecopEventService from './services/api/event/EventTelescop';
@@ -10,7 +10,7 @@ import Logger from './services/logger';
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
-
+let node;
 const isDevMode = process.execPath.match(/[\\/]electron/);
 const logger = new Logger();
 logger.level = 'debug';
@@ -45,31 +45,46 @@ const createWindow = async () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-ipfsd.local((err, node) => {
-  app.on('ready', () => {
-    logger.debug('electon is ready wait run ipfs daemon ....')
-    node.startDaemon((err, api) => {
-      if(err){
-        console.error(err);
-        return false;
-      }
-      var eventIpfs = new IpfsEventService(ipcMain, api);
-      var eventTelescopConfig = new TelescopConfigEventService(ipcMain, api);
-      var eventTelescop = new TelecopEventService(ipcMain, api);
-      logger.debug('ipfs daemon is started display  main windows');
-      createWindow();
-    });
+  app.on('ready', (err, a) => {
+    logger.debug('app ready');
+    try{
+      node = new IPFS()
+      node.on('error', (error) =>{
+        if(error.message.indexOf("mismatch version") > -1){
+          logger.warn("Bad version of IPFS see  :");
+          process.exit(1);
+        }
+        logger.error(error.message);
+        process.exit(1);
+      });
+      node.on('ready', () => {
+          node.id((err, id) => {
+          if (err) {
+            return console.log(err)
+          }
+          console.log(id)
+          var eventIpfs = new IpfsEventService(ipcMain, node);
+          var eventTelescopConfig = new TelescopConfigEventService(ipcMain, node);
+          var eventTelescop = new TelecopEventService(ipcMain, node);
+          logger.debug('ipfs daemon is started display  main windows');
+          createWindow();
+        });
+      });
+    }catch(e){
+      logger.error(e);
+      process.exit(1);
+    }
   });
 
   // Quit when all windows are closed.
   app.on('window-all-closed', () => {
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
-    node.stopDaemon((err) => {
+    /*node.stopDaemon((err) => {
       if (process.platform !== 'darwin') {
         app.quit();
       }
-    });
+    });*/
   });
 
   app.on('activate', () => {
@@ -79,7 +94,7 @@ ipfsd.local((err, node) => {
       createWindow();
     }
   });
-});
+//});
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
