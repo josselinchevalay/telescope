@@ -51,7 +51,7 @@ const createWindow = async () => {
       node = new IPFS()
       node.on('error', (error) =>{
         if(error.message.indexOf("mismatch version") > -1){
-          logger.warn("Bad version of IPFS see  :");
+          logger.warn("Bad version of IPFS change version in ~/.jsipfs/version  5 to 6 or in you repository path");
           process.exit(1);
         }
         logger.error(error.message);
