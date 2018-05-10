@@ -19,5 +19,5 @@ cache:
         - electron
         - node_modules
 install:
-  - npm install --dev
+  - npm install --only-dev
 script: build.sh && ./node_modules/.bin/electron-forge package
