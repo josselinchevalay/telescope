@@ -2,10 +2,6 @@
 
 GUI tools to manage IPFS daemon.
 
-# Requirement
-
-go-ipfs `https://dist.ipfs.io/#go-ipfs`
-
 # Features
 * add file / directory in ipfs by drag-n-drop
 * copy IPFS link to clipboard
@@ -20,7 +16,8 @@ go-ipfs `https://dist.ipfs.io/#go-ipfs`
 
 # Install (development only)
 ```
-npm install --dev 
+npm install --only-dev
+./build.sh 
 ./node_modules/.bin/electron-forge start
 ```
 
