@@ -8,7 +8,6 @@ logger.level = "debug";
 export default class IpfsEventService {
 
     constructor(ipc, ipfsApi) {
-        console.log(ipfsApi);
         this.eventService = new EventService(ipc);
         this.ipfsApi = ipfsApi;
 

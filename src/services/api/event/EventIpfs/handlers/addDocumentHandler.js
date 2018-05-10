@@ -74,6 +74,7 @@ function addOnIpfs(event, ressources, ipfsApi) {
         return element.type !== "os/directory";
     });
     ipfsApi.files.add(files, (error, response) => {
+        console.log(response);
         ressources.forEach((ressource) => {
             if (error) {
                 var message = "ipfs/document/add ressource" + ressource.path + "doesn't add to ipfs error code : " + error.code;

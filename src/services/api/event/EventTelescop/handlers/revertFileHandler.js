@@ -11,24 +11,26 @@ logger.level = "debug";
 
 
 function getRessourceByhash(ipfsApi, path, hash){
-     ipfsApi.files.get(hash).then((stream) => {
-            stream.on('data', (file) => {
-                var tempPath = path;
-                // write the file's path and contents to standard out
-                if(file.content){    
-                    var tabIpfsPath =  file.path.split('/');
-                    var ipfsHash = tabIpfsPath[0];        
-                    var ipfsPath = _.without(tabIpfsPath, ipfsHash).join(Path.sep)
-                    if(FileSystemApi.basename(path).indexOf('.') === -1){ // is directory
-                        tempPath = Path.join(path, ipfsPath);
-                    }                    
-                    file.content.on('data', (content)=>{
-                        FileSystemApi.removeFile(tempPath);
-                        FileSystemApi.createFileByBuffer(tempPath, content);
-                    });
-                }              
-            })
-        });
+    let stream = ipfsApi.files.getReadableStream(hash);
+    stream.on('data', (file) => {
+        var tempPath = path;
+        // write the file's path and contents to standard out
+        if(file.content){    
+            var tabIpfsPath =  file.path.split('/');
+            var ipfsHash = tabIpfsPath[0];        
+            var ipfsPath = _.without(tabIpfsPath, ipfsHash).join(Path.sep)
+            if(file.type === "dir"){ // is directory
+                tempPath = Path.join(path, ipfsPath);
+            }else{                  
+                file.content.on('data', (content)=>{
+                    FileSystemApi.removeFile(tempPath);
+                    FileSystemApi.createFileByBuffer(tempPath, content);
+                });
+                file.content.resume();
+            }
+        }              
+    })
+
 }
 
 function updateTrack(track, commit){

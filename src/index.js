@@ -62,7 +62,6 @@ const createWindow = async () => {
           if (err) {
             return console.log(err)
           }
-          console.log(id)
           var eventIpfs = new IpfsEventService(ipcMain, node);
           var eventTelescopConfig = new TelescopConfigEventService(ipcMain, node);
           var eventTelescop = new TelecopEventService(ipcMain, node);
