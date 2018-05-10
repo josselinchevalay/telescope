@@ -14,9 +14,7 @@ export default class IpfsEventService {
         this.handlers = {
             "ipfs/document/add": AddDocumentHandler.bind(this),
             "ipfs/config/get": (event, data) => {
-                logger.debug("ipfs/config/get");
                 this.ipfsApi.config.get((err, config) => {
-                    var config = JSON.parse(config);
                     event.returnValue = JSON.stringify(config);
                 })
             }
