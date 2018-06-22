@@ -20,6 +20,12 @@ npm install --only-dev
 ./build.sh 
 ./node_modules/.bin/electron-forge start
 ```
+if install failed look like that https://github.com/josselinchevalay/telescope/issues/30 
+
+```
+rm -f package-lock.json
+npm install --only-dev
+```
 
 # Add resource in IPFS by Telescope
 ![Alt Text](https://media.giphy.com/media/3o7aD4GugsHoa7plYY/giphy.gif)
