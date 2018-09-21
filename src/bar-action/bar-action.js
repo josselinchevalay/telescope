@@ -32,7 +32,7 @@ export default class BarAction extends Component{
 
     render(){
         return(
-            <div className="col-md-3 sidebar">
+            <div className="menu">
                 <ul className="nav nav-sidebar">
                     <li>
                         <input className="form-control" type="text" placeholder="Search for someone" name="search" value={this.state.search} />

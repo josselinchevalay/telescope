@@ -18,14 +18,15 @@
 .menu {
 	background: #12404c;
 	color: #ffff;
-	width:  100%;
+	width:  16%;
 	height: 501px;
 	order: 1;
 }
 
 .application {
-	background: #ffff;
+	background: white;
 	color: #0000;
 	width: 84%;
-	height: 501px;	
+	height: 501px;
+	order: 2;	
 }

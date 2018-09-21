@@ -33,7 +33,7 @@ export default class AppBody extends Component{
 
      render() {
         return (
-            <div className="col-md-9 main">
+            <div className="application">
                 {this.getCurrentPage()}
             </div>     
         );

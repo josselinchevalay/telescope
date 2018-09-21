@@ -17,6 +17,8 @@ export default class Application extends Component{
                     <div className="header">
                         <h1>Telescop</h1>
                     </div>
+                    <BarAction selected="Files" application={this}/>
+                    <AppBody application={this}/>
                 </div>
         );
     }
