@@ -13,11 +13,10 @@ export default class Application extends Component{
     
     render(){
         return(
-                <div className="row">
-                    <DragAndDrop/>
-                    <Notification />
-                    <BarAction selected="Files" application={this}/>
-                    <AppBody application={this}/>
+                <div className="container">
+                    <div className="header">
+                        <h1>Telescop</h1>
+                    </div>
                 </div>
         );
     }

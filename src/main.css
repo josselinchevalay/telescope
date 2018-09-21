@@ -1,0 +1,31 @@
+.container {
+	background: orange;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+}
+
+
+.header {
+	background: #092228;
+	color: #50e3c2;
+	width: 100%;
+	height: 78px;
+	order : 0; 
+}
+
+.menu {
+	background: #12404c;
+	color: #ffff;
+	width:  100%;
+	height: 501px;
+	order: 1;
+}
+
+.application {
+	background: #ffff;
+	color: #0000;
+	width: 84%;
+	height: 501px;	
+}
