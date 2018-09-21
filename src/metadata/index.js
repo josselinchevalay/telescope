@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import TelescopTopics from '../services/api/event/EventTelescop/topics';
 import NotificationTopics from '../services/api/event/EventNotification/topics';
 
@@ -20,34 +19,27 @@ export default class AppBody extends Component{
 		this.changeHandler = this.change.bind(this);
 	}
 
-	changeBtn(idRow, name, oldClass, newClass, handler){
-		let btnActionDOM = document.querySelector(`#${idRow} td a.action`);
-		btnActionDOM.classList.remove(oldClass);
-		btnActionDOM.classList.add(newClass);
-		btnActionDOM.innerHTML = name;
-		btnActionDOM.onclick = handler;
-	}
-
 	change(event){
-		let idRow = event.target.dataset['row'];
-		let valueDOM = document.querySelector(`#${idRow} input`);
-		let newValue = valueDOM.value;
-		let state = this.state;
-		state.metadata[idRow] = newValue;
-		this.changeBtn(idRow, "Delete", "btn-warning", "btn-danger", this.changeHandler);
-		valueDOM.innerHTML = `<b>${newValue}</b>`;
+		console.log(event.target);
 	}
 
 	getHTMLInputTemplate(namedNodeHTML){
 		return `<input type="text" value="${namedNodeHTML.dataset.value}" onChange="{${this.changeHandler}}" />`;
 	}
 
+	changeClassButton(id) {
+		let dom = document.querySelector(`#${id}>td>a.btn`);
+		if(dom.classList.contains('btn-danger') && dom.classList.contains('delete')){
+			dom.classList.remove(['btn-danger', 'delete']);
+		}else{
+			dom.classList.add(['btn-warning', 'update']);
+		}
+	}
+
 	edit(event){
 		let namedNodeHTML = event.target;
-		let idRow = event.target.dataset['row'];
-		let btnActionDOM = document.querySelector(`#${idRow} td a.action`);
-		this.changeBtn(idRow, "Update", "btn-danger", "btn-warning", this.changeHandler);
 		event.target.innerHTML = this.getHTMLInputTemplate(namedNodeHTML);
+		this.changeClassButton(namedNodeHTML.dataset['row']);
 	}
 
 	getMetadata(){
@@ -71,7 +63,7 @@ export default class AppBody extends Component{
     			   <tbody>
 	    			   {
 	    			   	   Object.keys(this.state.metadata).map((metaName) => {
-	    			   	   	   return <tr id={metaName}><th scope="row">{metaName}</th><td data-row={metaName} data-value={this.state.metadata[metaName]} className="value" onClick={this.editHandler} >{this.state.metadata[metaName]}</td><td><a href="#" className="btn btn-danger action" data-row={metaName}>Delete</a></td></tr>;
+	    			   	   	   return <tr id={metaName}><th scope="row">{metaName}</th><td data-row={metaName} data-value={this.state.metadata[metaName]} className="value" onClick={this.editHandler} >{this.state.metadata[metaName]}</td><td><a href="#" className="btn btn-danger delete">Delete</a></td></tr>;
 	    			   	   })
 	    			   }
 	    			   <tr className="form-group">
