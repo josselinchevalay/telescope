@@ -16,6 +16,7 @@ export default class BarAction extends Component{
         super(props);
         this.state = {selected: this.props.selected , connected : false, search: ''};
         this.pingIpfsInstance();
+        this.buttonAddFileClickHandler = this.buttonAddFileClick.bind(this);
         setInterval(this.pingIpfsInstance.bind(this), timeIPFSHeartBeat);
     }
  
@@ -30,14 +31,21 @@ export default class BarAction extends Component{
         this.setState(state);    
     }
 
+    buttonAddFileClick() {
+        let element = document.getElementsByClassName('input-file')[0].click();
+    }
+
     render(){
         return(
             <div className="menu">
-                <ul className="nav nav-sidebar">
-                    <li>
-                        <input className="form-control" type="text" placeholder="Search for someone" name="search" value={this.state.search} />
-                    </li>                
-                    {
+                <div className="menu-elements">
+                   <a href="#" className="btn btn-small btn-success" onClick={this.buttonAddFileClickHandler}>
+                        <i className="fa fa-plus"></i>&nbsp;
+                        <span>Add Files</span>
+                        <input type="file" className="input-file" name="myFile"/>
+                   </a>
+                   <div className="menu-actions">
+                        {
                         MenuItems.map((item)=>{
                             return( 
                                 <li className={`${this.state.selected === item.toString() ? 'active' : ''}`}  key={item.toString()} > 
@@ -48,10 +56,8 @@ export default class BarAction extends Component{
                             );
                         })
                     }
-                    <li>   
-                        IPFS  <span className={`glyphicon glyphicon-signal ${(this.state.connected) ? 'connected' : 'disconnected'}`} ></span>
-                    </li>
-                </ul>
+                   </div>
+                </div>
             </div>
         );
     }
