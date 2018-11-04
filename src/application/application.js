@@ -10,7 +10,7 @@ export default class Application extends Component{
         this.state = {context: this.props.context};
     }
 
-    clikcHandler(event){
+    backTo(event){
       let index = null;
       if(!event.target.dataset['page'])
         return;
@@ -18,6 +18,20 @@ export default class Application extends Component{
         index = event.target.dataset['page']
 
         this.setState({context:index});
+    }
+
+    replaceClass(element, oldClass, newClass) {
+      element.classList.remove(oldClass);
+      element.classList.add(newClass);
+    }
+
+    changeFileDisplay(event){
+      let element = event.target;
+      if(element.classList.contains("fa-grip-horizontal")){
+        this.replaceClass(element, "fa-grip-horizontal", "fa-th-list");
+      }else {
+        this.replaceClass(element, "fa-th-list","fa-grip-horizontal");
+      }
     }
 
     render(){
@@ -28,7 +42,7 @@ export default class Application extends Component{
                     <div className="header">
                         <div className="header-items">
                             <div className="header-item-0">
-                                <img data-page="Files" src="images/logo.png" className="brandLogo" alt="telecsop" onClick={this.clikcHandler.bind(this)}/>
+                                <img data-page="Files" src="images/logo.png" className="brandLogo" alt="telecsop" onClick={this.backTo.bind(this)}/>
                             </div>
                             <div className="header-item-1">
                                <div>
@@ -40,7 +54,7 @@ export default class Application extends Component{
                                 <a href="#">
                                     <i className="fa fa-search"></i>
                                 </a>
-                                <a href="#">
+                                <a href="#" onClick={this.changeFileDisplay.bind(this)}>
                                     <i className="fas fa-grip-horizontal"></i>
                                 </a>
                             </div>
