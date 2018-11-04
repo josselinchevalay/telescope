@@ -8,9 +8,18 @@ export default class Application extends Component{
     constructor(props){
         super(props);
         this.state = {context: this.props.context};
-
     }
-    
+
+    clikcHandler(event){
+      let index = null;
+      if(!event.target.dataset['page'])
+        return;
+      else
+        index = event.target.dataset['page']
+
+        this.setState({context:index});
+    }
+
     render(){
         return(
                 <div className="container" id="containerApp">
@@ -19,7 +28,7 @@ export default class Application extends Component{
                     <div className="header">
                         <div className="header-items">
                             <div className="header-item-0">
-                                <img src="images/logo.png" className="brandLogo" alt="telecsop"/>
+                                <img data-page="Files" src="images/logo.png" className="brandLogo" alt="telecsop" onClick={this.clikcHandler.bind(this)}/>
                             </div>
                             <div className="header-item-1">
                                <div>
