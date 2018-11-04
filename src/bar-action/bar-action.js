@@ -20,7 +20,13 @@ export default class BarAction extends Component{
         setInterval(this.pingIpfsInstance.bind(this), timeIPFSHeartBeat);
     }
 
-    clikcHandler(index){
+    clikcHandler(event){
+      let index = null;
+      if(!event.target.dataset['page'])
+        return;
+      else
+        index = event.target.dataset['page']
+
         this.setState({selected:index});
         this.props.application.setState({context:index});
     }
@@ -48,15 +54,15 @@ export default class BarAction extends Component{
                    </div>
                    <div className="flex-group-column menu-elements-bottom">
                     <div>
-                      <a href="#" className="none-style">
-                          <i className="fas fa-cog"/>
-                          <span>Setting</span>
+                      <a href="#" className="none-style" data-page="Config" onClick={this.clikcHandler.bind(this)} >
+                          <i data-page="Config" className="fas fa-cog"/>
+                          <span data-page="Config">Setting</span>
                       </a>
                     </div>
                     <div>
-                      <a href="#" className="none-style">
-                          <i className="fas fa-info-circle"/>
-                          <span>About</span>
+                      <a href="#" className="none-style"onClick={this.clikcHandler.bind(this)}>
+                          <i data-page="About" className="fas fa-info-circle"/>
+                          <span data-page="About">About</span>
                       </a>
                     </div>
                    </div>

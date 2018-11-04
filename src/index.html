@@ -41,8 +41,6 @@
       function apply(){
           var ratio = 0.8439;
           var height = Math.round(window.screen.height * ratio);
-          console.log("screen heigth " + window.screen.height);
-          console.log("height " + height);
           document.getElementsByClassName('menu')[0].style.height = height+'px'
           document.getElementsByClassName('application')[0].style.height = height+'px'
          }
@@ -50,7 +48,6 @@
 
       (() =>{
         events.forEach((eventName) => {
-          //window.addEventListener(eventName, apply);
           document.addEventListener(eventName, apply);
         });
 
