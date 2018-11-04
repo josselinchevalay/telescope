@@ -1,23 +1,13 @@
 import React, { Component } from 'react';
 
-const MenuItems = [
-    "Files",
-    "Config",
-    "About",
-    ];
-
 const timeIPFSHeartBeat = 1000 * 6;
-const ipfsUrlInstance = 'http://localhost:3001/run';
-
 
 export default class BarAction extends Component{
 
     constructor(props){
         super(props);
         this.state = {selected: this.props.selected , connected : false, search: ''};
-        this.pingIpfsInstance();
-        this.buttonAddFileClickHandler = this.buttonAddFileClick.bind(this);
-        setInterval(this.pingIpfsInstance.bind(this), timeIPFSHeartBeat);
+        this.buttonAddFileClickHandler = this.buttonAddFileClick.bind(this);        
     }
 
     clikcHandler(event){
@@ -29,12 +19,6 @@ export default class BarAction extends Component{
 
         this.setState({selected:index});
         this.props.application.setState({context:index});
-    }
-
-    pingIpfsInstance() {
-        let state = this.state;
-        state.connected  = true;
-        this.setState(state);
     }
 
     buttonAddFileClick() {
