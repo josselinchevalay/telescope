@@ -23,7 +23,7 @@ body {
 	color: #50e3c2;
 	width: 100%;
 	height: 14%;
-	order : 0; 
+	order : 0;
 }
 
 .header-items {
@@ -61,8 +61,17 @@ body {
     color: #50e3c2;
 }
 
+.flex-group-column {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	text-align: center;
+}
 
 .menu {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
 	text-align: center;
 	background: #12404c;
 	color: #ffff;
@@ -72,7 +81,35 @@ body {
 }
 
 .menu-elements {
+	height: inherit;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	text-align: center;
+	order: 0;
 	margin-top: 24px;
+}
+
+.menu-elements .menu-elements-header {
+	order: 0;
+ flex-grow:5;
+}
+
+.menu-elements-bottom {
+	order: 2;
+	margin-bottom: 20px;
+}
+
+.menu-elements-bottom .none-style:nth-child(1) {
+	margin-bottom: 10px;
+}
+
+.menu-elements-bottom .none-style .fa-cog {
+		margin-right: 5px;
+}
+
+.menu-elements-bottom .none-style .fa-info-circle {
+		margin-right: 5px;
 }
 
 .application {
@@ -80,7 +117,14 @@ body {
 	color: #0000;
 	width: 84%;
 	height: 86%;
-	order: 2;	
+	order: 2;
+}
+
+.none-style {
+	border: none;
+	display: inline-block;
+	text-decoration: none;
+	color: white;
 }
 
 /** Generic Element */
@@ -122,16 +166,16 @@ progress::-moz-progress-bar {
   border-radius: 12px;
   background: #FFF;
   box-shadow: inset 0 -2px 4px rgba(0,0,0,0.4), 0 2px 5px 0px rgba(0,0,0,0.3);
-  
+
 }
 progress::-webkit-progress-bar {
     background: transparent;
-}  
-progress::-webkit-progress-value {  
+}
+progress::-webkit-progress-value {
   border-radius: 12px;
   background: #f18a22;
-  box-shadow: inset 0 -2px 4px rgba(0,0,0,0.4), 0 2px 5px 0px rgba(0,0,0,0.3); 
-} 
+  box-shadow: inset 0 -2px 4px rgba(0,0,0,0.4), 0 2px 5px 0px rgba(0,0,0,0.3);
+}
 
 .input-file{
 	opacity: 0;

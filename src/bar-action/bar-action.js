@@ -19,7 +19,7 @@ export default class BarAction extends Component{
         this.buttonAddFileClickHandler = this.buttonAddFileClick.bind(this);
         setInterval(this.pingIpfsInstance.bind(this), timeIPFSHeartBeat);
     }
- 
+
     clikcHandler(index){
         this.setState({selected:index});
         this.props.application.setState({context:index});
@@ -28,7 +28,7 @@ export default class BarAction extends Component{
     pingIpfsInstance() {
         let state = this.state;
         state.connected  = true;
-        this.setState(state);    
+        this.setState(state);
     }
 
     buttonAddFileClick() {
@@ -39,23 +39,26 @@ export default class BarAction extends Component{
         return(
             <div className="menu">
                 <div className="menu-elements">
-                   <a href="#" className="btn btn-small btn-success" onClick={this.buttonAddFileClickHandler}>
-                        <i className="fa fa-plus"></i>&nbsp;
-                        <span>Add Files</span>
-                        <input type="file" className="input-file" name="myFile"/>
-                   </a>
-                   <div className="menu-actions">
-                        {
-                        MenuItems.map((item)=>{
-                            return( 
-                                <li className={`${this.state.selected === item.toString() ? 'active' : ''}`}  key={item.toString()} > 
-                                    <a href="#" onClick={this.clikcHandler.bind(this, item.toString())}>
-                                        {item.toString()}
-                                    </a>
-                                </li>
-                            );
-                        })
-                    }
+                   <div className="menu-elements-header">
+                     <a href="#" className="btn btn-small btn-success" onClick={this.buttonAddFileClickHandler}>
+                          <i className="fa fa-plus"></i>&nbsp;
+                          <span>Add Files</span>
+                          <input type="file" className="input-file" name="myFile"/>
+                      </a>
+                   </div>
+                   <div className="flex-group-column menu-elements-bottom">
+                    <div>
+                      <a href="#" className="none-style">
+                          <i className="fas fa-cog"/>
+                          <span>Setting</span>
+                      </a>
+                    </div>
+                    <div>
+                      <a href="#" className="none-style">
+                          <i className="fas fa-info-circle"/>
+                          <span>About</span>
+                      </a>
+                    </div>
                    </div>
                 </div>
             </div>

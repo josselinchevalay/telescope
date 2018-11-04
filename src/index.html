@@ -22,7 +22,7 @@
     <title>Telescop</title>
   </head>
   <body id="root">
-    
+
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -37,17 +37,24 @@
     <script src="./main.js"></script>
     <script>
       /*Design javascript*/
-      function apply(){ 
-          var ratio = 0.819;
-          var height = Math.round(screen.height * ratio);
+      let events = ['fullscreenchange', 'resize'];
+      function apply(){
+          var ratio = 0.8439;
+          var height = Math.round(window.screen.height * ratio);
+          console.log("screen heigth " + window.screen.height);
+          console.log("height " + height);
           document.getElementsByClassName('menu')[0].style.height = height+'px'
           document.getElementsByClassName('application')[0].style.height = height+'px'
          }
-      window.onresize = apply;
+
 
       (() =>{
+        events.forEach((eventName) => {
+          //window.addEventListener(eventName, apply);
+          document.addEventListener(eventName, apply);
+        });
 
-         apply();
+        apply();
       })();
     </script>
   </body>
