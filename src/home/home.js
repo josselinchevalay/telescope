@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TopicsTelecopEvent from '../services/api/event/EventTelescop/topics';
 import NotificationTopics from '../services/api/event/EventNotification/topics';
 import TileFile from './tileFile';
+import AddFileButton from '../add-file/add_file.js';
 
 const { ipcRenderer } = require('electron');
 const _ = require('lodash');
@@ -62,15 +63,24 @@ export default class FolderPage extends Component {
     }
 
     render() {
-        return (
+      if(this.state.files.length <= 0) {
+          return (
+              <div>
+                <h1 className="color-orange text-center">It's Kinda empty in here</h1>
+                <p className="text-center text-bold">
+                  Add your first files by drag and <br/>
+                  drop  any file in here. <br/>
+                  or <br/>
+                  <AddFileButton />
+                </p>
+              </div>
+          );
+        }else{
+          return (
             <div>
-                <h1 onClick={this.decrementHandler}>{this.props.application.state.context} {(this.state.contextName) ? this.state.contextName : ""} </h1>
-                <div className="flex-row">
-                    {this.state.files.map((file) => {
-                        return <TileFile file={file} parent={this} key={file.path} />;
-                    })}
-                </div>
+            Have files
             </div>
-        );
+          );
+        }
     }
 }

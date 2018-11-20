@@ -17,6 +17,17 @@ body {
 	justify-content: flex-start;
 }
 
+.text-center{
+	text-align: center;
+}
+
+.text-bold {
+	font-weight: bold;
+}
+
+.color-orange {
+	color:#f18a22;
+}
 
 .header {
 	background: #092228;

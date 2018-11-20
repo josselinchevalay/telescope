@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import AddFileButton from '../add-file/add_file.js';
 const timeIPFSHeartBeat = 1000 * 6;
 
 export default class BarAction extends Component{
@@ -7,7 +7,6 @@ export default class BarAction extends Component{
     constructor(props){
         super(props);
         this.state = {selected: this.props.selected , connected : false, search: ''};
-        this.buttonAddFileClickHandler = this.buttonAddFileClick.bind(this);        
     }
 
     clikcHandler(event){
@@ -21,20 +20,12 @@ export default class BarAction extends Component{
         this.props.application.setState({context:index});
     }
 
-    buttonAddFileClick() {
-        let element = document.getElementsByClassName('input-file')[0].click();
-    }
-
     render(){
         return(
             <div className="menu">
                 <div className="menu-elements">
                    <div className="menu-elements-header">
-                     <a href="#" className="btn btn-small btn-success" onClick={this.buttonAddFileClickHandler}>
-                          <i className="fa fa-plus"></i>&nbsp;
-                          <span>Add Files</span>
-                          <input type="file" className="input-file" name="myFile"/>
-                      </a>
+                      <AddFileButton />
                    </div>
                    <div className="flex-group-column menu-elements-bottom">
                     <div>
