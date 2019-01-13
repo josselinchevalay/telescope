@@ -4,6 +4,7 @@ const mkdirp = require('mkdirp');
 const crypto = require('crypto');
 const mime = require('mime-types')
 const _ = require('lodash');
+const FileType = require('file-type');
 
 var fsAPI = function() {
     'use strict';
@@ -199,6 +200,18 @@ var fsAPI = function() {
         }else{
             return 0;
         }
+    }
+
+    this.getExtension = (p) => {
+      if(this.isDirectory(p)){
+        return {ext : "directory", mime: "application/directory"};
+      } else {
+        let type = FileType(fs.readFileSync(p));
+        if(type === null) {
+          let extension = path.extname(p).toString().replace('.', '');
+          return { ext: extension, mime: "application/"+ extension};
+        }
+      }
     }
 
 };

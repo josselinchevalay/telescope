@@ -5,6 +5,7 @@ import IPFS from 'ipfs';
 import IpfsEventService from './services/api/event/EventIpfs';
 import TelescopConfigEventService from './services/api/event/EventConfig';
 import TelecopEventService from './services/api/event/EventTelescop';
+import FileSystemEventService from './services/api/event/EventFilesystem';
 import Logger from './services/logger';
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -65,6 +66,7 @@ const createWindow = async () => {
           var eventIpfs = new IpfsEventService(ipcMain, node);
           var eventTelescopConfig = new TelescopConfigEventService(ipcMain, node);
           var eventTelescop = new TelecopEventService(ipcMain, node);
+          var EventFilesystem = new FileSystemEventService(ipcMain, node);
           logger.debug('ipfs daemon is started display  main windows');
           createWindow();
         });

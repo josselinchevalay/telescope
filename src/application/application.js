@@ -7,7 +7,7 @@ import DragAndDrop from '../dragndrop/dragndrop';
 export default class Application extends Component{
     constructor(props){
         super(props);
-        this.state = {context: this.props.context};
+        this.state = {context: this.props.context, display: "horizon"};
     }
 
     backTo(event){
@@ -27,12 +27,17 @@ export default class Application extends Component{
 
     changeFileDisplay(event){
       let element = event.target;
+      let state = this.state;
       if(element.classList.contains("fa-grip-horizontal")){
+        state.display = "list";
         this.replaceClass(element, "fa-grip-horizontal", "fa-th-list");
       }else {
+        state.display = "horizon";
         this.replaceClass(element, "fa-th-list","fa-grip-horizontal");
       }
+      this.setState(state);
     }
+
 
     render(){
         return(

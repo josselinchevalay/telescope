@@ -49,6 +49,7 @@
     "d3": "^4.9.1",
     "electron-compile": "^6.4.1",
     "electron-devtools-installer": "^2.2.0",
+    "file-type": "^10.7.0",
     "ipfs-bitswap": "^0.20.0",
     "jsonpath": "^0.2.11",
     "level": "^3.0.1",

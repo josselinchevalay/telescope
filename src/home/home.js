@@ -3,6 +3,7 @@ import TopicsTelecopEvent from '../services/api/event/EventTelescop/topics';
 import NotificationTopics from '../services/api/event/EventNotification/topics';
 import TileFile from './tileFile';
 import AddFileButton from '../add-file/add_file.js';
+import Grid from './grid.js';
 
 const { ipcRenderer } = require('electron');
 const _ = require('lodash');
@@ -77,9 +78,7 @@ export default class FolderPage extends Component {
           );
         }else{
           return (
-            <div>
-            Have files
-            </div>
+            <Grid display={this.props.application.state.display} parent={this}/>
           );
         }
     }

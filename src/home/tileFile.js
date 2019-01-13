@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import TelescopTopics from '../services/api/event/EventTelescop/topics';
 import IpfsTopics from '../services/api/event/EventIpfs/topics';
+import FileSystemTopics from '../services/api/event/EventFilesystem/topics';
+import Moment from 'moment';
 
 const { ipcRenderer } = require('electron')
 
@@ -79,21 +81,36 @@ export default class TileFile extends Component {
         }
     }
 
+    getExtension() {
+      return JSON.parse(ipcRenderer.sendSync(FileSystemTopics.GET_EXTENSION, this.state.file.path));
+    }
+
     render() {
-        return (
-            <div className="col-xs-6 col-sm-4 col-lg-3 card" onMouseOver={this.mouveOverHandler} onMouseOut={this.mouveOutHandler}>
-                <span className={"card-img-top glyphicon " + this.getGlyphicon()} style={styleImgTopCard} onClick={this.clickHandler} data-name={this.state.file.name} data-path={this.state.file.path}></span>
-                <div class="card-block">
-                    <h4 className="card-title">{this.state.file.name}</h4>
-                    <div style={this.showActions()}>
-                        <span className="glyphicon glyphicon-share" style={styleActionIcon} onClick={this.shareHandler}>Share</span>
-                        <span className="glyphicon glyphicon-download" style={styleActionIcon}>Download</span>
-                        <span className="glyphicon glyphicon-refresh" style={styleActionIcon} onClick={this.synchronizeHandler}>Synchronize</span>
-                        <span className="glyphicon glyphicon-book" style={styleActionIcon} onClick={this.historyHandler}>History</span>
-                        <span className="glyphicon glyphicon-tag" style={styleActionIcon} onClick={this.metaHandler}>Metadata</span>
-                    </div>
-                </div>
-            </div>
-        );
+       if(this.state.parent.state.display === "horizon") {
+          return (
+              <div className="col-xs-6 col-sm-4 col-lg-3 card" onMouseOver={this.mouveOverHandler} onMouseOut={this.mouveOutHandler}>
+                  <span className={"card-img-top glyphicon " + this.getGlyphicon()} style={styleImgTopCard} onClick={this.clickHandler} data-name={this.state.file.name} data-path={this.state.file.path}></span>
+                  <div class="card-block">
+                      <h4 className="card-title">{this.state.file.name}</h4>
+                      <div style={this.showActions()}>
+                          <span className="glyphicon glyphicon-share" style={styleActionIcon} onClick={this.shareHandler}>Share</span>
+                          <span className="glyphicon glyphicon-download" style={styleActionIcon}>Download</span>
+                          <span className="glyphicon glyphicon-refresh" style={styleActionIcon} onClick={this.synchronizeHandler}>Synchronize</span>
+                          <span className="glyphicon glyphicon-book" style={styleActionIcon} onClick={this.historyHandler}>History</span>
+                          <span className="glyphicon glyphicon-tag" style={styleActionIcon} onClick={this.metaHandler}>Metadata</span>
+                      </div>
+                  </div>
+              </div>
+          );
+        } else {
+          return (
+            <tr>
+              <td>{this.state.file.name}</td>
+              <td>{Moment(this.state.file.latestCid.createdAt).format('YYYY-MM-DD')}</td>
+              <td>{this.state.file.latestCid.size} Bytes </td>
+              <td>{this.getExtension().ext}</td>
+            </tr>
+          );
+        }
     }
 }
